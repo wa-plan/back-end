@@ -36,6 +36,8 @@ public class UserRequest {
     @NoArgsConstructor
     public static class AlarmUpdateDTO{
 
+        private Long id;
+
         private Alarm morningAlarm;
 
         private Alarm nightAlarm;

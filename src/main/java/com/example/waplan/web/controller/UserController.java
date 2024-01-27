@@ -29,7 +29,7 @@ public class UserController {
         return ApiResponse.onSuccess(UserConverter.toJoinDTO(request));
     }
 
-    @PatchMapping("/update/alarm")
+    @PatchMapping("/update/alarm/{userId}")
     public ApiResponse<UserResponse.AlarmUpdateDTO> alarmUpdate(@RequestBody @Valid UserRequest.AlarmUpdateDTO request){
         userService.alarmUpdate(request);
         return ApiResponse.onSuccess(UserConverter.toAlarmUpdateDTO(request));

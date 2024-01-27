@@ -19,6 +19,8 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.hibernate.annotations.ColumnDefault;
+import org.hibernate.annotations.DynamicInsert;
 
 @Entity
 @Getter
@@ -26,6 +28,7 @@ import lombok.Setter;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
+@DynamicInsert
 @Table(name = "Member")
 public class User_ {
     @Id
@@ -46,15 +49,14 @@ public class User_ {
     @Column(nullable = true, length = 80)
     private String introduce;
 
-    @Column(columnDefinition = "VARCHAR(3) DEFAULT 'OFF'")
-    @Enumerated(EnumType.STRING)
-    private Alarm dominoAlarm;
 
-    @Column(columnDefinition = "VARCHAR(3) DEFAULT 'OFF'")
+    @Column(nullable = false, length = 3)
+    @ColumnDefault("'ON'")
     @Enumerated(EnumType.STRING)
     private Alarm morningAlarm;
 
-    @Column(columnDefinition = "VARCHAR(3) DEFAULT 'OFF'")
+    @Column(nullable = false, length = 3)
+    @ColumnDefault("'ON'")
     @Enumerated(EnumType.STRING)
     private Alarm nightAlarm;
 

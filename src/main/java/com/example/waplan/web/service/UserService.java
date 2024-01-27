@@ -40,10 +40,9 @@ public class UserService {
     }
 
     public void alarmUpdate(UserRequest.AlarmUpdateDTO request){
-        User_ user = User_.builder()
-            .nightAlarm(request.getNightAlarm())
-            .morningAlarm(request.getMorningAlarm())
-            .build();
+        User_ user = userRepository.findById(request.getId()).orElseThrow();
+        user.setMorningAlarm(request.getMorningAlarm());
+        user.setNightAlarm(request.getNightAlarm());
         userRepository.save(user);
     }
 }
