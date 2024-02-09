@@ -1,9 +1,8 @@
-package com.example.waplan.web.dto;
+package com.example.waplan.dto;
 
 
-import com.example.waplan.web.domain.enums.Alarm;
+import com.example.waplan.domain.enums.Alarm;
 import jakarta.validation.constraints.NotBlank;
-import java.time.LocalDateTime;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;

@@ -1,6 +1,6 @@
-package com.example.waplan.web.domain;
+package com.example.waplan.domain;
 
-import com.example.waplan.web.domain.enums.Alarm;
+import com.example.waplan.domain.enums.Alarm;
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -30,7 +30,7 @@ import org.hibernate.annotations.DynamicInsert;
 @NoArgsConstructor
 @DynamicInsert
 @Table(name = "Member")
-public class User_ {
+public class Member {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;

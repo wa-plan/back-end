@@ -1,11 +1,11 @@
-package com.example.waplan.web.service;
+package com.example.waplan.service;
 
 import com.example.waplan.apiPayload.code.status.ErrorStatus;
 import com.example.waplan.apiPayload.exception.handler.UserHandler;
-import com.example.waplan.web.domain.User_;
-import com.example.waplan.web.dto.UserRequest;
-import com.example.waplan.web.dto.UserResponse;
-import com.example.waplan.web.repository.UserRepository;
+import com.example.waplan.domain.Member;
+import com.example.waplan.dto.UserRequest.AlarmUpdateDTO;
+import com.example.waplan.dto.UserRequest.JoinDTO;
+import com.example.waplan.repository.UserRepository;
 import java.time.LocalDateTime;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
@@ -17,8 +17,8 @@ public class UserService {
 
     private final UserRepository userRepository;
 
-    public Long join(UserRequest.JoinDTO request){
-        User_ user = User_.builder()
+    public Long join(JoinDTO request){
+        Member user = Member.builder()
             .userId(request.getUserId())
             .password(request.getPassword())
             .email(request.getEmail())
@@ -32,15 +32,15 @@ public class UserService {
         return user.getId();
     }
 
-    private void validateDuplicateUser(User_ user){
-        List<User_> findUsers = userRepository.findUserEntityByUserId(user.getUserId());
+    private void validateDuplicateUser(Member user){
+        List<Member> findUsers = userRepository.findUserEntityByUserId(user.getUserId());
         if(!findUsers.isEmpty()){
             throw new UserHandler(ErrorStatus.JOIN_ERROR);
         }
     }
 
-    public void alarmUpdate(UserRequest.AlarmUpdateDTO request){
-        User_ user = userRepository.findById(request.getId()).orElseThrow();
+    public void alarmUpdate(AlarmUpdateDTO request){
+        Member user = userRepository.findById(request.getId()).orElseThrow();
         user.setMorningAlarm(request.getMorningAlarm());
         user.setNightAlarm(request.getNightAlarm());
         userRepository.save(user);
