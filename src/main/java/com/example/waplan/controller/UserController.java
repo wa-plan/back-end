@@ -1,14 +1,10 @@
-package com.example.waplan.web.controller;
-
-import static com.example.waplan.apiPayload.code.status.ErrorStatus.JOIN_ERROR;
+package com.example.waplan.controller;
 
 import com.example.waplan.apiPayload.ApiResponse;
-import com.example.waplan.apiPayload.code.status.ErrorStatus;
-import com.example.waplan.apiPayload.exception.handler.UserHandler;
-import com.example.waplan.web.converter.UserConverter;
-import com.example.waplan.web.dto.UserRequest;
-import com.example.waplan.web.dto.UserResponse;
-import com.example.waplan.web.service.UserService;
+import com.example.waplan.converter.UserConverter;
+import com.example.waplan.dto.UserRequest;
+import com.example.waplan.dto.UserResponse;
+import com.example.waplan.service.UserService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.PatchMapping;
@@ -29,7 +25,7 @@ public class UserController {
         return ApiResponse.onSuccess(UserConverter.toJoinDTO(request));
     }
 
-    @PatchMapping("/update/alarm")
+    @PatchMapping("/update/alarm/{userId}")
     public ApiResponse<UserResponse.AlarmUpdateDTO> alarmUpdate(@RequestBody @Valid UserRequest.AlarmUpdateDTO request){
         userService.alarmUpdate(request);
         return ApiResponse.onSuccess(UserConverter.toAlarmUpdateDTO(request));

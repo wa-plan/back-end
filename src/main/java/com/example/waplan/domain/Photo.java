@@ -1,4 +1,4 @@
-package com.example.waplan.web.domain;
+package com.example.waplan.domain;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
@@ -18,6 +18,6 @@ public class Photo {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id")
-    private User_ user;
+    private Member user;
 
 }

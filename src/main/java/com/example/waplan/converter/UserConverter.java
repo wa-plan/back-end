@@ -1,14 +1,13 @@
-package com.example.waplan.web.converter;
+package com.example.waplan.converter;
 
-import com.example.waplan.web.domain.User_;
-import com.example.waplan.web.dto.UserRequest;
-import com.example.waplan.web.dto.UserResponse;
-import java.time.LocalDate;
+import com.example.waplan.dto.UserRequest;
+import com.example.waplan.dto.UserResponse;
+import com.example.waplan.dto.UserResponse.JoinDTO;
 import java.time.LocalDateTime;
 
 public class UserConverter {
 
-    public static UserResponse.JoinDTO toJoinDTO(UserRequest.JoinDTO user){
+    public static JoinDTO toJoinDTO(UserRequest.JoinDTO user){
         return UserResponse.JoinDTO.builder()
             .userId(user.getUserId())
             .password(user.getPassword())

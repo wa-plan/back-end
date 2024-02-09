@@ -1,6 +1,6 @@
-package com.example.waplan.web.domain;
+package com.example.waplan.domain;
 
-import com.example.waplan.web.domain.enums.Alarm;
+import com.example.waplan.domain.enums.Alarm;
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -19,6 +19,8 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.hibernate.annotations.ColumnDefault;
+import org.hibernate.annotations.DynamicInsert;
 
 @Entity
 @Getter
@@ -26,8 +28,9 @@ import lombok.Setter;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
+@DynamicInsert
 @Table(name = "Member")
-public class User_ {
+public class Member {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -46,15 +49,14 @@ public class User_ {
     @Column(nullable = true, length = 80)
     private String introduce;
 
-    @Column(columnDefinition = "VARCHAR(3) DEFAULT 'OFF'")
-    @Enumerated(EnumType.STRING)
-    private Alarm dominoAlarm;
 
-    @Column(columnDefinition = "VARCHAR(3) DEFAULT 'OFF'")
+    @Column(nullable = false, length = 3)
+    @ColumnDefault("'ON'")
     @Enumerated(EnumType.STRING)
     private Alarm morningAlarm;
 
-    @Column(columnDefinition = "VARCHAR(3) DEFAULT 'OFF'")
+    @Column(nullable = false, length = 3)
+    @ColumnDefault("'ON'")
     @Enumerated(EnumType.STRING)
     private Alarm nightAlarm;
 
