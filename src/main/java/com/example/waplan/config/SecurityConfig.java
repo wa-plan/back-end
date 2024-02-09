@@ -15,6 +15,15 @@ import org.springframework.security.web.SecurityFilterChain;
 @RequiredArgsConstructor
 public class SecurityConfig {
 
+    //	 // 스프링 시큐리티 기능 비활성화
+//	@Bean
+//	public WebSecurityCustomizer configure() {
+//		return (web -> web.ignoring()
+//				.requestMatchers(toH2Console())
+//				.requestMatchers("/static/**", "/h2-console/**", "/favicon.ico", "/error", "/swagger-ui/**", "/swagger-resources/**", "/v3/api-docs/**")
+//		);
+//	}
+
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception{
         http.csrf(AbstractHttpConfigurer::disable)
@@ -32,8 +41,8 @@ public class SecurityConfig {
                 .sessionManagement(session -> session
                     .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
                 );
-        http.addFilterAfter(jsonUsernamePasswordLoginFilter(), LogoutFilter.class)
-            .addFilterBefore(jwtAuthenticationProcessingFilter(), JsonUsernamePasswordAuthenticationFilter.class);
+        //http.addFilterAfter(jsonUsernamePasswordLoginFilter(), LogoutFilter.class)
+        //    .addFilterBefore(jwtAuthenticationProcessingFilter(), JsonUsernamePasswordAuthenticationFilter.class);
         return http.build();
     }
 }
