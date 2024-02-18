@@ -8,33 +8,55 @@ import com.example.waplan.dto.UserRequest.JoinDTO;
 import com.example.waplan.repository.UserRepository;
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Objects;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 @Service
-@RequiredArgsConstructor
 public class UserService {
 
     private final UserRepository userRepository;
 
-    public Long join(JoinDTO request){
-        Member user = Member.builder()
-            .userId(request.getUserId())
-            .password(request.getPassword())
-            .email(request.getEmail())
-            .phoneNum(request.getPhoneNum())
-            .created_at(LocalDateTime.now())
-            .updated_at(LocalDateTime.now())
-            .build();
-        //중복 회원 검증
-        validateDuplicateUser(user);
-        userRepository.save(user);
-        return user.getId();
+    private final BCryptPasswordEncoder bCryptPasswordEncoder;
+
+    public UserService(UserRepository userRepository, BCryptPasswordEncoder bCryptPasswordEncoder){
+        this.userRepository = userRepository;
+        this.bCryptPasswordEncoder = bCryptPasswordEncoder;
     }
 
-    private void validateDuplicateUser(Member user){
-        List<Member> findUsers = userRepository.findUserEntityByUserId(user.getUserId());
-        if(!findUsers.isEmpty()){
+    public Member join(JoinDTO request){
+        Member member;
+        if(!Objects.equals(request.getUserId(), "admin")) {
+            member = Member.builder()
+                .userId(request.getUserId())
+                .password(bCryptPasswordEncoder.encode(request.getPassword()))
+                .email(request.getEmail())
+                .phoneNum(request.getPhoneNum())
+                .created_at(LocalDateTime.now())
+                .updated_at(LocalDateTime.now())
+                .role("ROLE_USER")
+                .build();
+        }
+        else{
+            member = Member.builder()
+                .userId(request.getUserId())
+                .password(bCryptPasswordEncoder.encode(request.getPassword()))
+                .email(request.getEmail())
+                .phoneNum(request.getPhoneNum())
+                .created_at(LocalDateTime.now())
+                .updated_at(LocalDateTime.now())
+                .role("ROLE_ADMIN")
+                .build();
+        }
+        //중복 회원 검증
+        validateDuplicateUser(member);
+        return userRepository.save(member);
+    }
+
+    private void validateDuplicateUser(Member member){
+        if(userRepository.existsByUserId(member.getUserId())){
             throw new UserHandler(ErrorStatus.JOIN_ERROR);
         }
     }

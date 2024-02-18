@@ -35,10 +35,10 @@ public class Member {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(nullable = false, length = 20)
+    @Column(nullable = false, length = 20, unique = true)
     private String userId;
 
-    @Column(nullable = false, length = 16)
+    @Column(nullable = false)
     private String password;
 
     private String email;
@@ -48,6 +48,8 @@ public class Member {
 
     @Column(nullable = true, length = 80)
     private String introduce;
+
+    private String role;
 
 
     @Column(nullable = false, length = 3)

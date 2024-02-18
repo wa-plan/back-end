@@ -1,5 +1,6 @@
 package com.example.waplan.converter;
 
+import com.example.waplan.domain.Member;
 import com.example.waplan.dto.UserRequest;
 import com.example.waplan.dto.UserResponse;
 import com.example.waplan.dto.UserResponse.JoinDTO;
@@ -7,12 +8,12 @@ import java.time.LocalDateTime;
 
 public class UserConverter {
 
-    public static JoinDTO toJoinDTO(UserRequest.JoinDTO user){
+    public static JoinDTO toJoinDTO(Member member){
         return UserResponse.JoinDTO.builder()
-            .userId(user.getUserId())
-            .password(user.getPassword())
-            .email(user.getEmail())
-            .phoneNum(user.getPhoneNum())
+            .userId(member.getUserId())
+            .password(member.getPassword())
+            .email(member.getEmail())
+            .phoneNum(member.getPhoneNum())
             .createdAt(LocalDateTime.now())
             .updatedAt(LocalDateTime.now())
             .build();
