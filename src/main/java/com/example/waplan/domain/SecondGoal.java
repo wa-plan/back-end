@@ -1,5 +1,6 @@
 package com.example.waplan.domain;
 
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
@@ -27,6 +28,6 @@ public class SecondGoal {
     @JoinColumn(name = "goal_id")
     private Goal goal;
 
-    @OneToMany(mappedBy = "secondGoal")
+    @OneToMany(mappedBy = "secondGoal", cascade = CascadeType.ALL)
     private List<ThirdGoal> thirdGoals = new ArrayList<>();
 }
