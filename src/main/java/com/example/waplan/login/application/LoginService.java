@@ -3,6 +3,7 @@ package com.example.waplan.login.application;
 import com.example.waplan.login.application.dto.SignUpRequest;
 import com.example.waplan.login.exception.AuthException;
 import com.example.waplan.login.exception.AuthExceptionType;
+import com.example.waplan.user.domain.Role;
 import com.example.waplan.user.domain.User;
 import com.example.waplan.user.domain.repository.UserRepository;
 import lombok.AccessLevel;
@@ -19,7 +20,8 @@ public class LoginService {
         if(userRepository.existsByUserId(signUpRequest.getUserId())){
             throw new AuthException(AuthExceptionType.DUPLICATED_ID);
         }
-        User user = new User(signUpRequest.getUserId(), signUpRequest.getPassword(), signUpRequest.getEmail(), signUpRequest.getPhoneNum(), signUpRequest.getDescription(), signUpRequest.getNickname());
+        User user = new User(signUpRequest.getUserId(), signUpRequest.getPassword(), signUpRequest.getEmail(), signUpRequest.getPhoneNum(), signUpRequest.getDescription(), signUpRequest.getNickname(),
+            Role.ROLE_USER);
 
         User result = userRepository.save(user);
         return result.getId();

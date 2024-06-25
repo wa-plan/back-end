@@ -82,7 +82,10 @@ public class SecurityConfig {
                 .requestMatchers(PathRequest.toH2Console()).permitAll()
                 //.requestMatchers("/", "/error", "/favicon.ico", "/**/*.png", "/**/*.gif", "/**/*.svg", "/**/*.jpg", "/**/*.html", "/**/*.css", "/**/*.js").permitAll()
                 .requestMatchers(antMatcher(HttpMethod.POST, "/api/auth/**")).permitAll()
-                .requestMatchers(antMatcher(HttpMethod.POST, "/api/user/**")).permitAll()
+                .requestMatchers(antMatcher(HttpMethod.POST, "/api/user/signup")).permitAll()
+                .requestMatchers(antMatcher(HttpMethod.POST, "/api/user/**")).hasRole("USER")
+                .requestMatchers(antMatcher(HttpMethod.GET, "/api/user/**")).hasRole("USER")
+                .requestMatchers(antMatcher(HttpMethod.PUT, "/api/user/**")).hasRole("USER")
                 .anyRequest().authenticated()
             );
 

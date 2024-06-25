@@ -7,22 +7,26 @@ import com.example.waplan.user.application.dto.UserResponse;
 import com.example.waplan.user.domain.User;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @RequiredArgsConstructor
+@RequestMapping("/api/user")
 public class UserApi {
 
     private final UserService userService;
 
-    @PutMapping("/user/morning_alarm")
+    @PutMapping("/morning_alarm")
     public ResponseEntity<Void> updateDescription(
-        final User user,
+        @CurrentUser final User user,
         @RequestBody final MorningAlarmRequest morningAlarmRequest
     ) {
+        System.out.println(user.getUserId());
         userService.updateMorningAlarm(user, morningAlarmRequest);
         return ResponseEntity.noContent().build();
     }
