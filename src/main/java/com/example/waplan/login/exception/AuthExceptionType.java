@@ -1,0 +1,35 @@
+package com.example.waplan.login.exception;
+
+import com.example.waplan.base.BaseExceptionType;
+import org.springframework.http.HttpStatus;
+
+public enum AuthExceptionType implements BaseExceptionType {
+
+    DUPLICATED_ID(
+        HttpStatus.BAD_REQUEST,
+        "이미 존재하는 아이디입니다."
+    ),
+
+    BAD_LOGIN(
+        HttpStatus.BAD_REQUEST,
+        "로그인 정보가 잘못되었습니다."
+    );
+
+    private final HttpStatus httpStatus;
+    private final String errorMessage;
+
+    AuthExceptionType(final HttpStatus httpStatus, final String errorMessage) {
+        this.httpStatus = httpStatus;
+        this.errorMessage = errorMessage;
+    }
+
+    @Override
+    public HttpStatus httpStatus() {
+        return httpStatus;
+    }
+
+    @Override
+    public String errorMessage() {
+        return errorMessage;
+    }
+}

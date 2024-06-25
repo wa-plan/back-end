@@ -1,48 +1,102 @@
 package com.example.waplan.config;
 
-
+import com.example.waplan.security.CustomUserDetailsService;
+import com.example.waplan.security.LoginFilter;
+import com.example.waplan.security.LoginSuccessHandler;
+import com.example.waplan.security.RestAuthenticationEntryPoint;
+import com.example.waplan.security.TokenAuthenticationFilter;
+import com.example.waplan.security.TokenProvider;
 import lombok.RequiredArgsConstructor;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
+import org.springframework.boot.autoconfigure.security.servlet.PathRequest;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.ProviderManager;
+import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
+import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
-import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
+import org.springframework.security.config.annotation.web.configuration.WebSecurityCustomizer;
 import org.springframework.security.config.http.SessionCreationPolicy;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+
+import java.util.Collections;
+
+import static org.springframework.security.config.Customizer.withDefaults;
+import static org.springframework.security.web.util.matcher.AntPathRequestMatcher.antMatcher;
 
 @Configuration
 @EnableWebSecurity
+@EnableGlobalMethodSecurity(prePostEnabled = true)
 @RequiredArgsConstructor
 public class SecurityConfig {
 
-    //	 // 스프링 시큐리티 기능 비활성화
-//	@Bean
-//	public WebSecurityCustomizer configure() {
-//		return (web -> web.ignoring()
-//				.requestMatchers(toH2Console())
-//				.requestMatchers("/static/**", "/h2-console/**", "/favicon.ico", "/error", "/swagger-ui/**", "/swagger-resources/**", "/v3/api-docs/**")
-//		);
-//	}
+    @Bean
+    @ConditionalOnProperty(name = "spring.h2.console.enabled",havingValue = "true")
+    public WebSecurityCustomizer configureH2ConsoleEnable() {
+        return web -> web.ignoring()
+            .requestMatchers(PathRequest.toH2Console());
+    }
+
+
+    private static final String ADMIN = "ADMIN";
+    private static final String USER = "USER";
+
+    private final CustomUserDetailsService customUserDetailsService;
+    private final TokenProvider tokenProvider;
 
     @Bean
-    public SecurityFilterChain filterChain(HttpSecurity http) throws Exception{
-        http.csrf(AbstractHttpConfigurer::disable)
-            .httpBasic(AbstractHttpConfigurer::disable)
-            .formLogin(AbstractHttpConfigurer::disable)
-            .authorizeHttpRequests((authorize) -> authorize
-                .requestMatchers("/signup", "/", "/login").permitAll()
-                .anyRequest().authenticated())
-                .formLogin(formLogin -> formLogin
-                    .loginPage("/login")
-                    .defaultSuccessUrl("/home"))
-                .logout((logout) -> logout
-                    .logoutSuccessUrl("/login")
-                    .invalidateHttpSession(true))
-                .sessionManagement(session -> session
-                    .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
-                );
-        //http.addFilterAfter(jsonUsernamePasswordLoginFilter(), LogoutFilter.class)
-        //    .addFilterBefore(jwtAuthenticationProcessingFilter(), JsonUsernamePasswordAuthenticationFilter.class);
+    public TokenAuthenticationFilter tokenAuthenticationFilter() {
+        return new TokenAuthenticationFilter();
+    }
+
+    @Bean
+    public PasswordEncoder passwordEncoder() {
+        return new BCryptPasswordEncoder();
+    }
+
+    @Bean
+    public AuthenticationManager authenticationManager() {
+        DaoAuthenticationProvider authProvider = new DaoAuthenticationProvider();
+        authProvider.setUserDetailsService(customUserDetailsService);
+        authProvider.setPasswordEncoder(passwordEncoder());
+        return new ProviderManager(Collections.singletonList(authProvider));
+    }
+
+    @Bean
+    public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
+        http
+            .cors(withDefaults())
+            .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
+            .csrf(csrf -> csrf.disable())
+            .formLogin(form -> form.disable())
+            .httpBasic(httpBasic -> httpBasic.disable())
+            .exceptionHandling(exception -> exception.authenticationEntryPoint(new RestAuthenticationEntryPoint()))
+            .authorizeHttpRequests(authorize -> authorize
+                //h2 설정
+                .requestMatchers(PathRequest.toH2Console()).permitAll()
+                //.requestMatchers("/", "/error", "/favicon.ico", "/**/*.png", "/**/*.gif", "/**/*.svg", "/**/*.jpg", "/**/*.html", "/**/*.css", "/**/*.js").permitAll()
+                .requestMatchers(antMatcher(HttpMethod.POST, "/api/auth/**")).permitAll()
+                .requestMatchers(antMatcher(HttpMethod.POST, "/api/user/**")).permitAll()
+                .anyRequest().authenticated()
+            );
+
+        http.addFilterBefore(tokenAuthenticationFilter(), UsernamePasswordAuthenticationFilter.class);
+        http.addFilterBefore(loginFilter(), UsernamePasswordAuthenticationFilter.class);
+
         return http.build();
+    }
+
+    private LoginFilter loginFilter() throws Exception {
+        LoginFilter loginFilter = new LoginFilter();
+        loginFilter.setFilterProcessesUrl("/api/auth/login");
+        loginFilter.setAuthenticationManager(authenticationManager());
+        loginFilter.setAuthenticationSuccessHandler(new LoginSuccessHandler(tokenProvider));
+        return loginFilter;
     }
 }
