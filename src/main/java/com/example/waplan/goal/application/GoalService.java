@@ -25,9 +25,6 @@ public class GoalService {
         return firstGoalRepository.save(goal);
     }
 
-    public boolean checkIfUserExists(String userId){
-        return firstGoalRepository.existsByUserId(userId);
-    }
 
     public List<FirstGoal> getAllFirstGoals() {
         return firstGoalRepository.findAll();
