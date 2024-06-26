@@ -1,4 +1,4 @@
-package com.example.waplan.user.domain.goal;
+package com.example.waplan.goal.domain;
 
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;

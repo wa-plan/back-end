@@ -1,8 +1,8 @@
-package com.example.waplan.user.api;
+package com.example.waplan.goal.api;
 
-import com.example.waplan.user.application.dto.goal.FirstGoalDto;
-import com.example.waplan.user.application.goal.GoalService;
-import com.example.waplan.user.domain.goal.FirstGoal;
+import com.example.waplan.goal.application.dto.FirstGoalDto;
+import com.example.waplan.goal.application.GoalService;
+import com.example.waplan.goal.domain.FirstGoal;
 import java.util.List;
 import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,7 +13,6 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController

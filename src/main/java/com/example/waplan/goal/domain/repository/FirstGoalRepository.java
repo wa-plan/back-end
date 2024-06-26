@@ -1,7 +1,6 @@
-package com.example.waplan.user.domain.repository.goal;
+package com.example.waplan.goal.domain.repository;
 
-import com.example.waplan.user.domain.User;
-import com.example.waplan.user.domain.goal.FirstGoal;
+import com.example.waplan.goal.domain.FirstGoal;
 import java.util.List;
 import java.util.Optional;
 import org.springframework.data.jpa.repository.JpaRepository;

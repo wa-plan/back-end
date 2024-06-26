@@ -1,5 +1,5 @@
-package com.example.waplan.user.application.dto.goal;
-import com.example.waplan.user.domain.goal.AchievementStatus;
+package com.example.waplan.goal.application.dto;
+import com.example.waplan.goal.domain.AchievementStatus;
 import lombok.Getter;
 import lombok.Setter;
 

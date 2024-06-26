@@ -1,8 +1,8 @@
-package com.example.waplan.user.application.goal;
+package com.example.waplan.goal.application;
 
-import com.example.waplan.user.application.dto.goal.FirstGoalDto;
-import com.example.waplan.user.domain.goal.FirstGoal;
-import com.example.waplan.user.domain.repository.goal.FirstGoalRepository;
+import com.example.waplan.goal.application.dto.FirstGoalDto;
+import com.example.waplan.goal.domain.FirstGoal;
+import com.example.waplan.goal.domain.repository.FirstGoalRepository;
 import java.util.List;
 import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
