@@ -2,17 +2,21 @@ package com.example.waplan.user.domain.goal;
 
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.OneToMany;
+import jakarta.persistence.Table;
 import jakarta.persistence.Temporal;
 import jakarta.persistence.TemporalType;
 import java.util.Date;
 import java.util.List;
 
+@Entity
+@Table(name = "제1목표")
 public class FirstGoal {
     @Id
     @GeneratedValue(strategy =  GenerationType.IDENTITY)
@@ -24,9 +28,9 @@ public class FirstGoal {
     @Column(name= "내용")
     private String content;
 
-    @Column(name="D-day", nullable= false)
-    @Temporal(TemporalType.DATE)
-    private Date dDay;
+//    @Column(name="D-day", nullable= false)
+//    @Temporal(TemporalType.DATE)
+//    private Date dDay;
 
     @Column(name="색깔", nullable= false, length= 20)
     private String color;

@@ -3,18 +3,19 @@ package com.example.waplan.user.domain.goal;
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
-import jakarta.persistence.OneToMany;
+import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
-import java.util.List;
 
 @Entity
-@Table(name = "제목표")
-public class SecondGoal {
+@Table(name = "제3목표")
+public class ThirdGoal {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -22,13 +23,15 @@ public class SecondGoal {
     @Column(name = "title", nullable = false, length = 15)
     private String title;
 
-    @Column(name = "field", nullable = false, length = 15)
-    private String field;
+    @Enumerated(EnumType.STRING)
+    @Column(name = "성취도", nullable = false)
+    private AchievementLevel achievementLevel;
 
     @ManyToOne
-    @JoinColumn(name = "first_goal_id", referencedColumnName = "id")
-    private FirstGoal firstGoal;
+    @JoinColumn(name = "second_goal_id", referencedColumnName = "id")
+    private SecondGoal secondGoal;
 
-    @OneToMany(mappedBy= "secondGoal", cascade = CascadeType.ALL, orphanRemoval= true)
-    private List<ThirdGoal> thirdGoals;
+    @OneToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "goal_date_id", referencedColumnName = "id")
+    private GoalDate goalDate;
 }
