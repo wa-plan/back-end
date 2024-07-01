@@ -1,21 +1,18 @@
 package com.example.waplan.goal.api;
 
-import com.example.waplan.goal.application.dto.FirstGoalDto;
 import com.example.waplan.goal.application.GoalService;
+import com.example.waplan.goal.application.dto.FirstGoalDetailDto;
+import com.example.waplan.goal.application.dto.FirstGoalDto;
 import com.example.waplan.goal.domain.FirstGoal;
 import com.example.waplan.security.CurrentUser;
 import com.example.waplan.user.domain.User;
-import java.util.List;
-import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
+import java.util.Optional;
+import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/goal")
@@ -25,7 +22,9 @@ public class FirstGoalApi {
 
     @GetMapping("/first")
     public ResponseEntity<List<FirstGoalDto>> getAllFirstGoals(@CurrentUser User user){
-        List<FirstGoalDto> goals = goalService.getAllGoals(user.getUserId());
+        List<FirstGoalDto> goals = goalService.getAllGoals(user.getUserId()).stream()
+            .map(FirstGoalDto::fromEntity)
+            .collect(Collectors.toList());
         return ResponseEntity.ok(goals);
     }
 
@@ -36,10 +35,10 @@ public class FirstGoalApi {
     }
 
     @GetMapping("/detail/{firstGoalId}")
-    public ResponseEntity<FirstGoalDto> getFirstGoalById(@PathVariable Long firstGoalId, @CurrentUser User user){
+    public ResponseEntity<FirstGoalDetailDto> getFirstGoalById(@PathVariable Long firstGoalId, @CurrentUser User user){
         Optional<FirstGoal> goal = goalService.getFirstGoalById(firstGoalId);
         if(goal.isPresent() && goal.get().getUser().getUserId().equals(user.getUserId())){
-            return ResponseEntity.ok(FirstGoalDto.fromEntity(goal.get()));
+            return ResponseEntity.ok(FirstGoalDetailDto.fromEntity(goal.get()));
         }
         return ResponseEntity.notFound().build();
     }

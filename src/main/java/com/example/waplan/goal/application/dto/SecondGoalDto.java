@@ -14,7 +14,7 @@ public class SecondGoalDto {
     private String field;
     private List<ThirdGoalDto> thirdGoals;
 
-    private SecondGoalDto fromEntity(SecondGoal goal){
+    public static SecondGoalDto fromEntity(SecondGoal goal){
         SecondGoalDto dto = new SecondGoalDto();
         dto.setId(goal.getId());
         dto.setTitle(goal.getTitle());
