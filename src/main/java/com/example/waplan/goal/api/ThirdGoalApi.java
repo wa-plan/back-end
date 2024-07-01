@@ -104,10 +104,10 @@ public class ThirdGoalApi {
     }
 
     @PostMapping("/third/{thirdId}/dates")
-    public ResponseEntity<ThirdGoalDto> updateDates(@PathVariable Long thirdId, @RequestBody List<Date> dates, @CurrentUser User user) {
+    public ResponseEntity<ThirdGoalDto> updateDates(@PathVariable Long thirdId, @RequestBody List<Date> goalDates, @CurrentUser User user) {
         Optional<ThirdGoal> thirdGoal = thirdGoalService.getThirdGoalById(thirdId);
         if (thirdGoal.isPresent() && thirdGoal.get().getSecondGoal().getFirstGoal().getUser().getUserId().equals(user.getUserId())) {
-            ThirdGoal updatedGoal = thirdGoalService.updateDates(thirdId, dates);
+            ThirdGoal updatedGoal = thirdGoalService.updateDates(thirdId, goalDates);
             return ResponseEntity.ok(ThirdGoalDto.fromEntity(updatedGoal));
         }
         return ResponseEntity.notFound().build();
