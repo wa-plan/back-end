@@ -36,7 +36,6 @@ public class SecondGoalApi {
             .map(SecondGoalDto::fromEntity)
             .collect(Collectors.toList());
         return ResponseEntity.ok(secondGoalDtos);
-
     }
 
     @PostMapping("/edit/second")

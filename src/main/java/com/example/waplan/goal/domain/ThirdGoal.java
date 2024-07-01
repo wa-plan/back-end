@@ -27,6 +27,12 @@ public class ThirdGoal {
     @Column(name = "title", nullable = false, length = 15)
     private String title;
 
+    @Column(name = "newTitle", nullable = true, length = 15)
+    private String newTitle;
+
+    @Column(name = "color", nullable = false, length = 15)
+    private String color;
+
     @Enumerated(EnumType.STRING)
     @Column(name = "성취도", nullable = false)
     private AchievementLevel achievementLevel;

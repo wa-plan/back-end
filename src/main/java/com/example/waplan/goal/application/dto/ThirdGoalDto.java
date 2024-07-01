@@ -11,6 +11,8 @@ import lombok.Setter;
 public class ThirdGoalDto {
     private Long id;
     private String title;
+    private String newTitle;
+    private String color;
     private AchievementLevel achievementLevel;
     private GoalDate goalDate;
 
@@ -18,9 +20,12 @@ public class ThirdGoalDto {
         ThirdGoalDto dto = new ThirdGoalDto();
         dto.setId(goal.getId());
         dto.setTitle(goal.getTitle());
+        dto.setNewTitle(goal.getNewTitle());
+        dto.setNewTitle(goal.getNewTitle());
         dto.setAchievementLevel(goal.getAchievementLevel());
         dto.setGoalDate(goal.getGoalDate());
 
         return dto;
     }
+
 }
