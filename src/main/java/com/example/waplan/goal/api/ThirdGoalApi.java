@@ -4,6 +4,7 @@ import com.example.waplan.goal.application.ThirdGoalService;
 import com.example.waplan.goal.application.dto.ThirdGoalAchievementDto;
 import com.example.waplan.goal.application.dto.ThirdGoalDto;
 import com.example.waplan.goal.application.dto.ThirdGoalNewTitleDto;
+import com.example.waplan.goal.domain.GoalDate;
 import com.example.waplan.goal.domain.ThirdGoal;
 import com.example.waplan.security.CurrentUser;
 import com.example.waplan.user.domain.User;
@@ -108,6 +109,19 @@ public class ThirdGoalApi {
         if (thirdGoal.isPresent() && thirdGoal.get().getSecondGoal().getFirstGoal().getUser().getUserId().equals(user.getUserId())) {
             ThirdGoal updatedGoal = thirdGoalService.updateDates(thirdId, dates);
             return ResponseEntity.ok(ThirdGoalDto.fromEntity(updatedGoal));
+        }
+        return ResponseEntity.notFound().build();
+    }
+
+    @GetMapping("/third/{thirdId}/dates")
+    public ResponseEntity<List<Date>> getDates(@PathVariable Long thirdId, @CurrentUser User user) {
+        Optional<ThirdGoal> thirdGoal = thirdGoalService.getThirdGoalById(thirdId);
+        if (thirdGoal.isPresent() && thirdGoal.get().getSecondGoal().getFirstGoal().getUser().getUserId().equals(user.getUserId())) {
+            GoalDate goalDate = thirdGoal.get().getGoalDates();
+            if (goalDate != null) {
+                return ResponseEntity.ok(goalDate.getDates());
+            }
+            return ResponseEntity.noContent().build();
         }
         return ResponseEntity.notFound().build();
     }

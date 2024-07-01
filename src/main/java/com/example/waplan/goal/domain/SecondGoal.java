@@ -15,7 +15,7 @@ import lombok.Getter;
 import lombok.Setter;
 
 @Entity
-@Table(name = "제목표")
+@Table(name = "제2목표")
 @Getter
 @Setter
 public class SecondGoal {

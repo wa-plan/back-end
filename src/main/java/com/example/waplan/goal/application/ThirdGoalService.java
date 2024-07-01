@@ -77,7 +77,7 @@ public class ThirdGoalService {
         ThirdGoal goal = thirdGoalRepository.findById(id).orElseThrow(() -> new RuntimeException("ThirdGoal not found"));
         GoalDate goalDate = new GoalDate();
         goalDate.setDates(dates);
-        goal.setGoalDate(goalDate);
+        goal.setGoalDates(goalDate);
         return thirdGoalRepository.save(goal);
     }
 }
