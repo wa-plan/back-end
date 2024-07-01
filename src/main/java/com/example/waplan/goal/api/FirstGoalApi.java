@@ -1,6 +1,6 @@
 package com.example.waplan.goal.api;
 
-import com.example.waplan.goal.application.GoalService;
+import com.example.waplan.goal.application.FirstGoalService;
 import com.example.waplan.goal.application.dto.FirstGoalDetailDto;
 import com.example.waplan.goal.application.dto.FirstGoalDto;
 import com.example.waplan.goal.domain.FirstGoal;
@@ -18,7 +18,7 @@ import java.util.stream.Collectors;
 @RequestMapping("/goal")
 public class FirstGoalApi {
     @Autowired
-    private GoalService goalService;
+    private FirstGoalService goalService;
 
     @GetMapping("/first")
     public ResponseEntity<List<FirstGoalDto>> getAllFirstGoals(@CurrentUser User user){
