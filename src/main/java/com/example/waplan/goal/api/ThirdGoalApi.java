@@ -7,6 +7,7 @@ import com.example.waplan.goal.application.dto.ThirdGoalNewTitleDto;
 import com.example.waplan.goal.domain.ThirdGoal;
 import com.example.waplan.security.CurrentUser;
 import com.example.waplan.user.domain.User;
+import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -96,6 +97,16 @@ public class ThirdGoalApi {
         if (thirdGoal.isPresent() && thirdGoal.get().getSecondGoal().getFirstGoal().getUser().getUserId().equals(user.getUserId())) {
             ThirdGoalAchievementDto updatedGoal = thirdGoalService.updateAchievementLevel(thirdId, achievement);
             return ResponseEntity.ok(updatedGoal);
+        }
+        return ResponseEntity.notFound().build();
+    }
+
+    @PostMapping("/third/{thirdId}/dates")
+    public ResponseEntity<ThirdGoalDto> updateDates(@PathVariable Long thirdId, @RequestBody List<LocalDate> dates, @CurrentUser User user) {
+        Optional<ThirdGoal> thirdGoal = thirdGoalService.getThirdGoalById(thirdId);
+        if (thirdGoal.isPresent() && thirdGoal.get().getSecondGoal().getFirstGoal().getUser().getUserId().equals(user.getUserId())) {
+            ThirdGoal updatedGoal = thirdGoalService.updateDates(thirdId, dates);
+            return ResponseEntity.ok(ThirdGoalDto.fromEntity(updatedGoal));
         }
         return ResponseEntity.notFound().build();
     }

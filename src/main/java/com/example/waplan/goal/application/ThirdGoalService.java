@@ -6,6 +6,7 @@ import com.example.waplan.goal.application.dto.ThirdGoalNewTitleDto;
 import com.example.waplan.goal.domain.AchievementLevel;
 import com.example.waplan.goal.domain.ThirdGoal;
 import com.example.waplan.goal.domain.repository.ThirdGoalRepository;
+import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,7 +22,7 @@ public class ThirdGoalService {
         goal.setTitle(goalDto.getTitle());
         goal.setColor(goalDto.getColor());
         goal.setAchievementLevel(goalDto.getAchievementLevel());
-        goal.setGoalDate(goalDto.getGoalDate());
+        goal.setDates(goalDto.getDates());
 
         String newTitle = goalDto.getNewTitle();
         if(newTitle != null){
@@ -69,5 +70,11 @@ public class ThirdGoalService {
         }
         ThirdGoal updatedGoal = thirdGoalRepository.save(goal);
         return ThirdGoalAchievementDto.fromEntity(updatedGoal);
+    }
+
+    public ThirdGoal updateDates(Long id, List<LocalDate> dates){
+        ThirdGoal goal = thirdGoalRepository.findById(id).orElseThrow(() -> new RuntimeException("ThirdGoal not found"));
+        goal.setDates(dates);
+        return thirdGoalRepository.save(goal);
     }
 }

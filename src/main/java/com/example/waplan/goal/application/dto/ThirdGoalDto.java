@@ -3,6 +3,8 @@ package com.example.waplan.goal.application.dto;
 import com.example.waplan.goal.domain.AchievementLevel;
 import com.example.waplan.goal.domain.GoalDate;
 import com.example.waplan.goal.domain.ThirdGoal;
+import java.time.LocalDate;
+import java.util.List;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -14,7 +16,7 @@ public class ThirdGoalDto {
     private String newTitle;
     private String color;
     private AchievementLevel achievementLevel;
-    private GoalDate goalDate;
+    private List<LocalDate> dates;
 
     public static ThirdGoalDto fromEntity(ThirdGoal goal){
         ThirdGoalDto dto = new ThirdGoalDto();
@@ -23,7 +25,7 @@ public class ThirdGoalDto {
         dto.setNewTitle(goal.getNewTitle());
         dto.setNewTitle(goal.getNewTitle());
         dto.setAchievementLevel(goal.getAchievementLevel());
-        dto.setGoalDate(goal.getGoalDate());
+        dto.setDates(goal.getDates());
 
         return dto;
     }

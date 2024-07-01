@@ -1,7 +1,9 @@
 package com.example.waplan.goal.domain;
 
 import jakarta.persistence.CascadeType;
+import jakarta.persistence.CollectionTable;
 import jakarta.persistence.Column;
+import jakarta.persistence.ElementCollection;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
@@ -12,6 +14,8 @@ import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
+import java.time.LocalDate;
+import java.util.List;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -41,7 +45,8 @@ public class ThirdGoal {
     @JoinColumn(name = "second_goal_id", referencedColumnName = "id")
     private SecondGoal secondGoal;
 
-    @OneToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "goal_date_id", referencedColumnName = "id")
-    private GoalDate goalDate;
+    @ElementCollection
+    @CollectionTable(name = "third_goal_dates", joinColumns = @JoinColumn(name = "third_goal_id"))
+    @Column(name = "date")
+    private List<LocalDate> dates;
 }
