@@ -13,9 +13,13 @@ import jakarta.persistence.Temporal;
 import jakarta.persistence.TemporalType;
 import java.util.Date;
 import java.util.List;
+import lombok.Getter;
+import lombok.Setter;
 
 @Entity
-@Table(name = "날짜")
+@Table(name = "goal_date")
+@Getter
+@Setter
 public class GoalDate {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -23,7 +27,7 @@ public class GoalDate {
 
     @ElementCollection
     @CollectionTable(name = "goal_date_details", joinColumns = @JoinColumn(name = "goal_date_id"))
-    @Column(name = "날짜", nullable = false)
+    @Column(name = "date", nullable = false)
     @Temporal(TemporalType.DATE)
     private List<Date> dates;
 }

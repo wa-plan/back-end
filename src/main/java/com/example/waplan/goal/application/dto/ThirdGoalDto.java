@@ -16,7 +16,7 @@ public class ThirdGoalDto {
     private String newTitle;
     private String color;
     private AchievementLevel achievementLevel;
-    private List<LocalDate> dates;
+    private GoalDate goalDates;
 
     public static ThirdGoalDto fromEntity(ThirdGoal goal){
         ThirdGoalDto dto = new ThirdGoalDto();
@@ -25,7 +25,7 @@ public class ThirdGoalDto {
         dto.setNewTitle(goal.getNewTitle());
         dto.setNewTitle(goal.getNewTitle());
         dto.setAchievementLevel(goal.getAchievementLevel());
-        dto.setDates(goal.getDates());
+        dto.setGoalDates(goal.getGoalDates());
 
         return dto;
     }
