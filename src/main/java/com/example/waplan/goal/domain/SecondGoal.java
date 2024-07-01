@@ -11,9 +11,13 @@ import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 import java.util.List;
+import lombok.Getter;
+import lombok.Setter;
 
 @Entity
 @Table(name = "제목표")
+@Getter
+@Setter
 public class SecondGoal {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

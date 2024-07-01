@@ -24,23 +24,22 @@ public class FirstGoalApi {
     private GoalService goalService;
 
     @GetMapping("/first")
-    public ResponseEntity<List<FirstGoal>> getAllFirstGoals(@CurrentUser User user){
-        List<FirstGoal> goals = goalService.getAllGoals(user.getUserId());
+    public ResponseEntity<List<FirstGoalDto>> getAllFirstGoals(@CurrentUser User user){
+        List<FirstGoalDto> goals = goalService.getAllGoals(user.getUserId());
         return ResponseEntity.ok(goals);
     }
 
     @PostMapping("/add")
-    public ResponseEntity<FirstGoal> addGoal(@RequestBody FirstGoalDto goalDto, @CurrentUser User user){
-        goalDto.setUserId(user.getUserId());
+    public ResponseEntity<FirstGoalDto> addGoal(@RequestBody FirstGoalDto goalDto, @CurrentUser User user){
         FirstGoal goal = goalService.addGoal(goalDto, user);
-        return ResponseEntity.ok(goal);
+        return ResponseEntity.ok(FirstGoalDto.fromEntity(goal));
     }
 
     @GetMapping("/detail/{firstGoalId}")
-    public ResponseEntity<FirstGoal> getFirstGoalById(@PathVariable Long firstGoalId, @CurrentUser User user){
+    public ResponseEntity<FirstGoalDto> getFirstGoalById(@PathVariable Long firstGoalId, @CurrentUser User user){
         Optional<FirstGoal> goal = goalService.getFirstGoalById(firstGoalId);
         if(goal.isPresent() && goal.get().getUser().getUserId().equals(user.getUserId())){
-            return ResponseEntity.ok(goal.get());
+            return ResponseEntity.ok(FirstGoalDto.fromEntity(goal.get()));
         }
         return ResponseEntity.notFound().build();
     }
