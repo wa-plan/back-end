@@ -41,9 +41,13 @@ public class FirstGoal {
     @Column(name = "색깔", nullable = false, length = 20)
     private String color;
 
-    @Enumerated(EnumType.STRING)
+//    @Enumerated(EnumType.STRING)
+//    @Column(name = "달성여부", nullable = false)
+//    private AchievementStatus achievementStatus;
+
     @Column(name = "달성여부", nullable = false)
-    private AchievementStatus achievementStatus;
+    private boolean achieved;
+
 
     @Column(name = "쓰러뜨린 개수", nullable = false)
     private Integer streakCount;

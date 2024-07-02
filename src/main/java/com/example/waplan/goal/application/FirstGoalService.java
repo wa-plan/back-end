@@ -23,7 +23,7 @@ public class FirstGoalService {
         goal.setContent(goalDto.getContent());
         goal.setColor(goalDto.getColor());
         goal.setPicture(goalDto.getPicture());
-        goal.setAchievementStatus(AchievementStatus.NOT_STARTED);
+        goal.setAchieved(false);
         goal.setStreakCount(0);
         goal.setFavoriteStatus(false);
         goal.setUser(user);
