@@ -13,6 +13,7 @@ import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
+import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
 import java.util.List;
 import lombok.Getter;
@@ -30,12 +31,12 @@ public class FirstGoal {
     @Column(name = "목표", nullable = false, length = 50)
     private String goal;
 
-    @Column(name = "내용")
+    @Column(name = "내용", nullable = true, length = 100)
     private String content;
 
-//    @Column(name = "D-day", nullable = false)
-//    @Temporal(TemporalType.DATE)
-//    private Date dDay;
+    @OneToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "goal_date_id", referencedColumnName = "id")
+    private GoalDate goalDate;
 
     @Column(name = "색깔", nullable = false, length = 20)
     private String color;
@@ -52,6 +53,10 @@ public class FirstGoal {
 
     @OneToMany(mappedBy = "firstGoal", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<SecondGoal> secondGoals;
+
+    @Column(name="사진", nullable=true)
+    private String picture;
+
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id", nullable = false)

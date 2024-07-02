@@ -1,6 +1,7 @@
 package com.example.waplan.goal.api;
 
 import com.example.waplan.goal.application.FirstGoalService;
+import com.example.waplan.goal.application.dto.FirstGoalAddDto;
 import com.example.waplan.goal.application.dto.FirstGoalDetailDto;
 import com.example.waplan.goal.application.dto.FirstGoalDto;
 import com.example.waplan.goal.domain.FirstGoal;
@@ -29,7 +30,7 @@ public class FirstGoalApi {
     }
 
     @PostMapping("/add")
-    public ResponseEntity<FirstGoalDto> addGoal(@RequestBody FirstGoalDto goalDto, @CurrentUser User user){
+    public ResponseEntity<FirstGoalDto> addGoal(@RequestBody FirstGoalAddDto goalDto, @CurrentUser User user){
         FirstGoal goal = goalService.addGoal(goalDto, user);
         return ResponseEntity.ok(FirstGoalDto.fromEntity(goal));
     }
