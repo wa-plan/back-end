@@ -14,12 +14,14 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.hibernate.annotations.ColumnDefault;
+import org.hibernate.annotations.DynamicInsert;
 
 @Entity
 @Getter
 @Setter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Table(name = "Member")
+@DynamicInsert
 public class User extends BaseEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -39,7 +41,9 @@ public class User extends BaseEntity {
     @Column(nullable = false, length = 80)
     private String description;
 
+    @Enumerated(EnumType.STRING)
     private Role role;
+
     @Column(length = 3)
     @ColumnDefault("'ON'")
     @Enumerated(EnumType.STRING)
@@ -53,7 +57,8 @@ public class User extends BaseEntity {
     @Column(length = 15)
     private String nickname;
 
-    public User(final Long id, final  String userId, final String password, final String email, final String phoneNum, final String description, final String nickname){
+
+    public User(final Long id, final  String userId, final String password, final String email, final String phoneNum, final String description, final String nickname, final Role role, final AlarmType morningAlarm, final AlarmType nightAlarm){
         this.id = id;
         this.userId = userId;
         this.email = email;
@@ -61,19 +66,26 @@ public class User extends BaseEntity {
         this.nickname = nickname;
         this.password = password;
         this.phoneNum = phoneNum;
+        this.role = role;
+        this.morningAlarm = morningAlarm;
+        this.nightAlarm = nightAlarm;
     }
-    public User(final String userId, final String password, final String email, final String phoneNum, final String description, final String nickname){
+    public User(final String userId, final String password, final String email, final String phoneNum, final String description, final String nickname, final Role role){
         this.userId = userId;
         this.email = email;
         this.description = description;
         this.nickname = nickname;
         this.password = password;
         this.phoneNum = phoneNum;
-        this.role = Role.ROLE_USER;
+        this.role = role;
     }
 
     public void updateMorningAlarm(final AlarmType morningAlarm){
         this.morningAlarm = morningAlarm;
+    }
+
+    public void updateNightAlarm(final AlarmType nightAlarm){
+        this.nightAlarm = nightAlarm;
     }
     public String roleName() {
         return role.name();
