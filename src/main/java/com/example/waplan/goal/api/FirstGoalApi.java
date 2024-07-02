@@ -1,6 +1,7 @@
 package com.example.waplan.goal.api;
 
 import com.example.waplan.goal.application.FirstGoalService;
+import com.example.waplan.goal.application.dto.FirstGoalAddDto;
 import com.example.waplan.goal.application.dto.FirstGoalDetailDto;
 import com.example.waplan.goal.application.dto.FirstGoalDto;
 import com.example.waplan.goal.domain.FirstGoal;
@@ -29,7 +30,7 @@ public class FirstGoalApi {
     }
 
     @PostMapping("/add")
-    public ResponseEntity<FirstGoalDto> addGoal(@RequestBody FirstGoalDto goalDto, @CurrentUser User user){
+    public ResponseEntity<FirstGoalDto> addGoal(@RequestBody FirstGoalAddDto goalDto, @CurrentUser User user){
         FirstGoal goal = goalService.addGoal(goalDto, user);
         return ResponseEntity.ok(FirstGoalDto.fromEntity(goal));
     }
@@ -52,4 +53,29 @@ public class FirstGoalApi {
         }
         return ResponseEntity.notFound().build();
     }
+
+//    @GetMapping("/first/achieved")
+//    public ResponseEntity<List<FirstGoalDto>> getAchievedGoals(@CurrentUser User user){
+//        List<FirstGoalDto> goals = goalService.getGoalsByAchievementStatus(true, user.getUserId());
+//        return ResponseEntity.ok(goals);
+//    }
+//
+//    @GetMapping("/first/not-achieved")
+//    public ResponseEntity<List<FirstGoalDto>> getNotAchievedGoals(@CurrentUser User user){
+//        List<FirstGoalDto> goals = goalService.getGoalsByAchievementStatus(false, user.getUserId());
+//        return ResponseEntity.ok(goals);
+//    }
+
+    @GetMapping("/first/achieved")
+    public ResponseEntity<List<String>> getAchievedGoalTitles(@CurrentUser User user){
+        List<String> titles = goalService.getAllGoalTitlesByAchievementStatus(true, user.getUserId());
+        return ResponseEntity.ok(titles);
+    }
+
+    @GetMapping("/first/not-achieved")
+    public ResponseEntity<List<String>> getNotAchievedGoalTitles(@CurrentUser User user){
+        List<String> titles = goalService.getAllGoalTitlesByAchievementStatus(false, user.getUserId());
+        return ResponseEntity.ok(titles);
+    }
+
 }
