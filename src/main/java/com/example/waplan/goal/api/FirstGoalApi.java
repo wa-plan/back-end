@@ -53,4 +53,29 @@ public class FirstGoalApi {
         }
         return ResponseEntity.notFound().build();
     }
+
+//    @GetMapping("/first/achieved")
+//    public ResponseEntity<List<FirstGoalDto>> getAchievedGoals(@CurrentUser User user){
+//        List<FirstGoalDto> goals = goalService.getGoalsByAchievementStatus(true, user.getUserId());
+//        return ResponseEntity.ok(goals);
+//    }
+//
+//    @GetMapping("/first/not-achieved")
+//    public ResponseEntity<List<FirstGoalDto>> getNotAchievedGoals(@CurrentUser User user){
+//        List<FirstGoalDto> goals = goalService.getGoalsByAchievementStatus(false, user.getUserId());
+//        return ResponseEntity.ok(goals);
+//    }
+
+    @GetMapping("/first/achieved")
+    public ResponseEntity<List<String>> getAchievedGoalTitles(@CurrentUser User user){
+        List<String> titles = goalService.getAllGoalTitlesByAchievementStatus(true, user.getUserId());
+        return ResponseEntity.ok(titles);
+    }
+
+    @GetMapping("/first/not-achieved")
+    public ResponseEntity<List<String>> getNotAchievedGoalTitles(@CurrentUser User user){
+        List<String> titles = goalService.getAllGoalTitlesByAchievementStatus(false, user.getUserId());
+        return ResponseEntity.ok(titles);
+    }
+
 }

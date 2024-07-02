@@ -9,6 +9,7 @@ import com.example.waplan.goal.domain.repository.FirstGoalRepository;
 import com.example.waplan.user.domain.User;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -45,5 +46,16 @@ public class FirstGoalService {
 
     public List<FirstGoal> getAllGoals(String userId) {
         return firstGoalRepository.findAllByUser_UserId(userId);
+    }
+
+    public List<FirstGoalDto> getGoalsByAchievementStatus(boolean isAchieved, String userId) {
+        return firstGoalRepository.findAllByAchievedAndUser_UserId(isAchieved, userId)
+            .stream()
+            .map(FirstGoalDto::fromEntity)
+            .collect(Collectors.toList());
+    }
+
+    public List<String> getAllGoalTitlesByAchievementStatus(boolean isAchieved, String userId) {
+        return firstGoalRepository.findAllTitlesByAchievedAndUser_UserId(isAchieved, userId);
     }
 }
