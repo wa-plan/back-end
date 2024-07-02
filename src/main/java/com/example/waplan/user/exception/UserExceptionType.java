@@ -19,6 +19,11 @@ public enum UserExceptionType implements BaseExceptionType {
     NOT_MATCHING_TOKEN_AND_LOGIN_MEMBER(
         HttpStatus.UNAUTHORIZED,
         "사용자가 일치하지 않습니다."
+    ),
+
+    INVALID_PASSWORD(
+        HttpStatus.BAD_REQUEST,
+        "비밀번호가 일치하지 않습니다."
     );
 
 
