@@ -1,11 +1,13 @@
 package com.example.waplan.login.application;
 
+import com.example.waplan.login.application.dto.FindUserIdRequest;
 import com.example.waplan.login.application.dto.SignUpRequest;
 import com.example.waplan.login.exception.AuthException;
 import com.example.waplan.login.exception.AuthExceptionType;
 import com.example.waplan.user.domain.Role;
 import com.example.waplan.user.domain.User;
 import com.example.waplan.user.domain.repository.UserRepository;
+import java.util.Optional;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -25,6 +27,10 @@ public class LoginService {
 
         User result = userRepository.save(user);
         return result.getId();
+    }
+    public String findUserId(FindUserIdRequest findUserIdRequest){
+        User user = userRepository.findByNicknameAndEmail(findUserIdRequest.getNickname(), findUserIdRequest.getEmail()).orElseThrow(() -> new AuthException(AuthExceptionType.NOT_FOUND_USER));
+        return user.getUserId();
     }
 
 }

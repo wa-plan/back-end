@@ -1,6 +1,7 @@
 package com.example.waplan.login.api;
 
 import com.example.waplan.login.application.LoginService;
+import com.example.waplan.login.application.dto.FindUserIdRequest;
 import com.example.waplan.login.application.dto.SignUpRequest;
 import com.example.waplan.user.application.UserService;
 import jakarta.validation.Valid;
@@ -28,5 +29,12 @@ public class LoginApi {
         signUpRequest.setPassword(passwordEncoder.encode(signUpRequest.getPassword()));
         Long userId = loginService.registerUser(signUpRequest);
         return ResponseEntity.created(URI.create("/api/user/" + userId)).build();
+    }
+
+    @PreAuthorize("isAnonymous()")
+    @PostMapping("/find_userId")
+    public ResponseEntity<String> findUserId(@RequestBody @Valid FindUserIdRequest findUserIdRequest) {
+        String userId = loginService.findUserId(findUserIdRequest);
+        return ResponseEntity.ok(userId);
     }
 }
