@@ -57,7 +57,8 @@ public class User extends BaseEntity {
     @Column(length = 15)
     private String nickname;
 
-    public User(final Long id, final  String userId, final String password, final String email, final String phoneNum, final String description, final String nickname){
+
+    public User(final Long id, final  String userId, final String password, final String email, final String phoneNum, final String description, final String nickname, final Role role, final AlarmType morningAlarm, final AlarmType nightAlarm){
         this.id = id;
         this.userId = userId;
         this.email = email;
@@ -65,6 +66,9 @@ public class User extends BaseEntity {
         this.nickname = nickname;
         this.password = password;
         this.phoneNum = phoneNum;
+        this.role = role;
+        this.morningAlarm = morningAlarm;
+        this.nightAlarm = nightAlarm;
     }
     public User(final String userId, final String password, final String email, final String phoneNum, final String description, final String nickname, final Role role){
         this.userId = userId;
@@ -78,6 +82,10 @@ public class User extends BaseEntity {
 
     public void updateMorningAlarm(final AlarmType morningAlarm){
         this.morningAlarm = morningAlarm;
+    }
+
+    public void updateNightAlarm(final AlarmType nightAlarm){
+        this.nightAlarm = nightAlarm;
     }
     public String roleName() {
         return role.name();

@@ -1,6 +1,7 @@
 package com.example.waplan.user.application;
 
 import com.example.waplan.user.application.dto.MorningAlarmRequest;
+import com.example.waplan.user.application.dto.NightAlarmRequest;
 import com.example.waplan.user.domain.AlarmType;
 import com.example.waplan.user.domain.User;
 import com.example.waplan.user.domain.repository.UserRepository;
@@ -19,9 +20,18 @@ public class UserService {
 
     public void updateMorningAlarm(final User user, final MorningAlarmRequest morningAlarmRequest) {
         final AlarmType morningAlarm = morningAlarmRequest.getAlarm();
+        System.out.println("morningAlarm = " + morningAlarm.name());
 
         final User persistUser = userRepository.findById(user.getId())
             .orElseThrow(() -> new UserException(UserExceptionType.NOT_FOUND_MEMBER));
         persistUser.updateMorningAlarm(morningAlarm);
+    }
+
+    public void updateNightAlarm(final User user, final NightAlarmRequest nightAlarmRequest) {
+        final AlarmType nightAlarm = nightAlarmRequest.getAlarm();
+
+        final User persistUser = userRepository.findById(user.getId())
+            .orElseThrow(() -> new UserException(UserExceptionType.NOT_FOUND_MEMBER));
+        persistUser.updateNightAlarm(nightAlarm);
     }
 }

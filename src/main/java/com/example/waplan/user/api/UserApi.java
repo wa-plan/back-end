@@ -3,6 +3,7 @@ package com.example.waplan.user.api;
 import com.example.waplan.security.CurrentUser;
 import com.example.waplan.user.application.UserService;
 import com.example.waplan.user.application.dto.MorningAlarmRequest;
+import com.example.waplan.user.application.dto.NightAlarmRequest;
 import com.example.waplan.user.application.dto.UserResponse;
 import com.example.waplan.user.domain.User;
 import lombok.RequiredArgsConstructor;
@@ -22,12 +23,19 @@ public class UserApi {
     private final UserService userService;
 
     @PutMapping("/morning_alarm")
-    public ResponseEntity<Void> updateDescription(
+    public ResponseEntity<Void> updateMorningAlarm(
         @CurrentUser final User user,
         @RequestBody final MorningAlarmRequest morningAlarmRequest
     ) {
-        System.out.println(user.getUserId());
         userService.updateMorningAlarm(user, morningAlarmRequest);
+        return ResponseEntity.noContent().build();
+    }
+    @PutMapping("/night_alarm")
+    public ResponseEntity<Void> updateNightAlarm(
+        @CurrentUser final User user,
+        @RequestBody final NightAlarmRequest nightAlarmRequest
+    ) {
+        userService.updateNightAlarm(user, nightAlarmRequest);
         return ResponseEntity.noContent().build();
     }
 
