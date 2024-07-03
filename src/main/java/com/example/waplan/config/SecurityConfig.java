@@ -83,6 +83,8 @@ public class SecurityConfig {
                 //.requestMatchers("/", "/error", "/favicon.ico", "/**/*.png", "/**/*.gif", "/**/*.svg", "/**/*.jpg", "/**/*.html", "/**/*.css", "/**/*.js").permitAll()
                 .requestMatchers(antMatcher(HttpMethod.POST, "/api/auth/**")).permitAll()
                 .requestMatchers(antMatcher(HttpMethod.POST, "/api/user/signup")).permitAll()
+                .requestMatchers(antMatcher(HttpMethod.POST, "/api/user/reset_password")).permitAll()
+                .requestMatchers(antMatcher(HttpMethod.POST, "/api/user/find_userId")).permitAll()
                 .requestMatchers(antMatcher(HttpMethod.POST, "/api/user/**")).hasRole("USER")
                 .requestMatchers(antMatcher(HttpMethod.GET, "/api/user/**")).hasRole("USER")
                 .requestMatchers(antMatcher(HttpMethod.PUT, "/api/user/**")).hasRole("USER")

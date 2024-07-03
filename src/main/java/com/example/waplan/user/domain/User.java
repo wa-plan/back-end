@@ -84,6 +84,10 @@ public class User extends BaseEntity {
         this.morningAlarm = morningAlarm;
     }
 
+    public void updatePassword(String newPassword){
+        this.password = newPassword;
+    }
+
     public void updateNightAlarm(final AlarmType nightAlarm){
         this.nightAlarm = nightAlarm;
     }
