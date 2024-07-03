@@ -12,14 +12,15 @@ spring:
   mail:
     host: smtp.gmail.com
     port: 587
-    username: email
-    password: password
+    username: dodakki123
+    password: ruvfhfzmnrpvbwzq
     properties:
       mail:
-        stmp:
+        smtp:
           starttls:
             enable: true
           auth: true
+          timeout: 5000
 
 app:
   auth:

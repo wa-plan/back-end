@@ -8,10 +8,13 @@ import com.example.waplan.login.exception.AuthExceptionType;
 import com.example.waplan.user.domain.Role;
 import com.example.waplan.user.domain.User;
 import com.example.waplan.user.domain.repository.UserRepository;
+import jakarta.mail.internet.MimeMessage;
 import java.util.Objects;
 import java.util.Optional;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
+import org.springframework.mail.javamail.JavaMailSender;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -19,6 +22,8 @@ import org.springframework.stereotype.Service;
 public class LoginService {
 
     private final UserRepository userRepository;
+    private final JavaMailSender javaMailSender;
+    private final PasswordEncoder passwordEncoder;
 
     public Long registerUser(SignUpRequest signUpRequest) {
         if(userRepository.existsByUserId(signUpRequest.getUserId())){
@@ -35,32 +40,19 @@ public class LoginService {
         return user.getUserId();
     }
 
-    public String resetPassword(ResetPasswordRequest resetPasswordRequest) {
-        User user = userRepository.findByUserId(resetPasswordRequest.getUserId()).orElseThrow(() -> new AuthException(AuthExceptionType.NOT_FOUND_USER));
-        if(!Objects.equals(user.getEmail(), resetPasswordRequest.getEmail())){
-            throw new AuthException(AuthExceptionType.NOT_FOUND_USER);
-        }
-        user.setPassword(createRandomPw());
+//    public String resetPassword(ResetPasswordRequest resetPasswordRequest) {
+//        User user = userRepository.findByUserId(resetPasswordRequest.getUserId()).orElseThrow(() -> new AuthException(AuthExceptionType.NOT_FOUND_USER));
+//        if(!Objects.equals(user.getEmail(), resetPasswordRequest.getEmail())){
+//            throw new AuthException(AuthExceptionType.NOT_FOUND_USER);
+//        }
+//        MimeMessage mimeMessage = javaMailSender.createMimeMessage();
+//        return user.getPassword();
+//    }
+
+    public void setTempPassword(String email, String authNum){
+        User user = userRepository.findByEmail(email).orElseThrow(() -> new AuthException(AuthExceptionType.NOT_FOUND_USER));
+        user.updatePassword(passwordEncoder.encode(authNum));
         userRepository.save(user);
-        return user.getPassword();
-    }
-
-    public String createRandomPw() {
-        String[] StringSet = new String[]{ "0", "1", "2", "3", "4", "5", "6", "7", "8", "9",
-            "A", "B", "C", "D", "E", "F", "G", "H", "I", "J", "K", "L", "M", "N",
-            "O", "P", "Q", "R", "S", "T", "U", "V", "W", "X", "Y", "Z",
-            "a", "b", "c", "d", "e", "f", "g", "h", "i", "j", "k", "l", "m", "n",
-            "o", "p", "q", "r", "s", "t", "u", "v", "w", "x", "y", "z"
-        };
-
-        String pwd = "";
-
-        int randIndex = 0;
-        for(int i=0;i<6;i++){
-            randIndex = (int)(StringSet.length * Math.random());
-            pwd += StringSet[randIndex];
-        }
-        return pwd;
     }
 
 }

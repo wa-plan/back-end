@@ -5,6 +5,7 @@ import com.example.waplan.login.application.dto.FindUserIdRequest;
 import com.example.waplan.login.application.dto.ResetPasswordRequest;
 import com.example.waplan.login.application.dto.SignUpRequest;
 import com.example.waplan.mail.application.MailService;
+import com.example.waplan.mail.domain.EmailMessage;
 import com.example.waplan.user.application.UserService;
 import jakarta.validation.Valid;
 import java.net.URI;
@@ -44,8 +45,8 @@ public class LoginApi {
     @PreAuthorize("isAnonymous()")
     @PostMapping("/reset_password")
     public ResponseEntity<String> resetPassword(@RequestBody @Valid ResetPasswordRequest resetPasswordRequest) {
-        String newPassword = loginService.resetPassword(resetPasswordRequest);
-        mailService.sendSimpleEmail("[WA-PLAN]비밀번호 재설정 안내", resetPasswordRequest.getEmail(), "임시 비밀번호 발급: "+ newPassword);
+        EmailMessage emailMessage = new EmailMessage(resetPasswordRequest.getEmail(), "[WA-PLAN]비밀번호 재설정 안내");
+        String newPassword = mailService.sendEmail(emailMessage, "password");
         return ResponseEntity.ok(newPassword);
     }
 }
