@@ -8,7 +8,6 @@ import com.example.waplan.goal.domain.GoalDate;
 import com.example.waplan.goal.domain.ThirdGoal;
 import com.example.waplan.security.CurrentUser;
 import com.example.waplan.user.domain.User;
-import java.time.LocalDate;
 import java.util.Date;
 import java.util.List;
 import java.util.Optional;

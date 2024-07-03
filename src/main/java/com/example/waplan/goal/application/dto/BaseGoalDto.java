@@ -12,7 +12,7 @@ public class BaseGoalDto {
     private String goal;
     private String content;
     private String color;
-    private AchievementStatus achievementStatus;
+    private boolean achieved;
     private Integer streakCount;
     private boolean favoriteStatus;
 
@@ -21,7 +21,7 @@ public class BaseGoalDto {
         dto.setGoal(goal.getGoal());
         dto.setContent(goal.getContent());
         dto.setColor(goal.getColor());
-        dto.setAchievementStatus(goal.getAchievementStatus());
+        dto.setAchieved(goal.isAchieved());
         dto.setStreakCount(goal.getStreakCount());
         dto.setFavoriteStatus(goal.isFavoriteStatus());
         return dto;
