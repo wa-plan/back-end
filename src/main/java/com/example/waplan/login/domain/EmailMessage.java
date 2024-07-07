@@ -1,4 +1,4 @@
-package com.example.waplan.mail.domain;
+package com.example.waplan.login.domain;
 
 import lombok.Builder;
 import lombok.Getter;
