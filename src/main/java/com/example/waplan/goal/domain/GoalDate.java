@@ -1,5 +1,7 @@
 package com.example.waplan.goal.domain;
 
+import com.example.waplan.goal.domain.mapping.DateMapping;
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.CollectionTable;
 import jakarta.persistence.Column;
 import jakarta.persistence.ElementCollection;
@@ -8,9 +10,11 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
+import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 import jakarta.persistence.Temporal;
 import jakarta.persistence.TemporalType;
+import java.time.LocalDate;
 import java.util.Date;
 import java.util.List;
 import lombok.Getter;
@@ -25,9 +29,8 @@ public class GoalDate {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @ElementCollection
-    @CollectionTable(name = "goal_date_details", joinColumns = @JoinColumn(name = "goal_date_id"))
-    @Column(name = "date", nullable = false)
-    @Temporal(TemporalType.DATE)
-    private List<Date> dates;
+    private LocalDate date;
+
+    @OneToMany(mappedBy = "thirdGoal", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<DateMapping> dateMapping;
 }

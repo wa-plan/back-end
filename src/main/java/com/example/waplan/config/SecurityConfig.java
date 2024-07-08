@@ -88,6 +88,10 @@ public class SecurityConfig {
                 .requestMatchers(antMatcher(HttpMethod.POST, "/api/user/**")).hasRole("USER")
                 .requestMatchers(antMatcher(HttpMethod.GET, "/api/user/**")).hasRole("USER")
                 .requestMatchers(antMatcher(HttpMethod.PUT, "/api/user/**")).hasRole("USER")
+                .requestMatchers(antMatcher(HttpMethod.POST, "/goal/**")).hasRole("USER")
+                .requestMatchers(antMatcher(HttpMethod.GET, "/goal/**")).hasRole("USER")
+                .requestMatchers(antMatcher(HttpMethod.DELETE, "/goal/**")).hasRole("USER")
+                .requestMatchers(antMatcher(HttpMethod.GET, "/cheering")).hasRole("USER")
                 .anyRequest().authenticated()
             );
 
