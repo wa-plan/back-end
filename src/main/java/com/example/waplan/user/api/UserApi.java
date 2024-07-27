@@ -29,7 +29,7 @@ public class UserApi {
 
     private final UserService userService;
 
-    @PatchMapping("/morning_alarm")
+    @PutMapping("/morning_alarm")
     public ResponseEntity<Void> updateMorningAlarm(
         @CurrentUser final User user,
         @RequestBody @Valid final MorningAlarmRequest morningAlarmRequest
@@ -37,7 +37,7 @@ public class UserApi {
         userService.updateMorningAlarm(user, morningAlarmRequest);
         return ResponseEntity.noContent().build();
     }
-    @PatchMapping("/night_alarm")
+    @PutMapping("/night_alarm")
     public ResponseEntity<Void> updateNightAlarm(
         @CurrentUser final User user,
         @RequestBody @Valid final NightAlarmRequest nightAlarmRequest

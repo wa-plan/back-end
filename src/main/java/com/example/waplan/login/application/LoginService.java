@@ -36,7 +36,7 @@ public class LoginService {
         return result.getId();
     }
     public String findUserId(FindUserIdRequest findUserIdRequest){
-        User user = userRepository.findByNicknameAndEmail(findUserIdRequest.getNickname(), findUserIdRequest.getEmail()).orElseThrow(() -> new AuthException(AuthExceptionType.NOT_FOUND_USER));
+        User user = userRepository.findByPhoneNumAndEmail(findUserIdRequest.getPhoneNum(), findUserIdRequest.getEmail()).orElseThrow(() -> new AuthException(AuthExceptionType.NOT_FOUND_USER));
         return user.getUserId();
     }
 
