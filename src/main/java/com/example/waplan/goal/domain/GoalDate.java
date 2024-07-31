@@ -36,4 +36,8 @@ public class GoalDate {
 
     @OneToMany(mappedBy = "goalDate", cascade = CascadeType.ALL)
     private List<GoalDateMap> goalDateMapList = new ArrayList<GoalDateMap>();
+
+    public GoalDate(final LocalDate date) {
+        this.date = date;
+    }
 }

@@ -88,6 +88,8 @@ public class SecurityConfig {
                 .requestMatchers(antMatcher(HttpMethod.POST, "/api/user/**")).hasRole("USER")
                 .requestMatchers(antMatcher(HttpMethod.GET, "/api/user/**")).hasRole("USER")
                 .requestMatchers(antMatcher(HttpMethod.PUT, "/api/user/**")).hasRole("USER")
+                .requestMatchers(antMatcher(HttpMethod.POST, "/api/mandalart/**")).hasRole("USER")
+                .requestMatchers(antMatcher(HttpMethod.GET, "/api/mandalart/**")).hasRole("USER")
                 .anyRequest().authenticated()
             );
 

@@ -1,6 +1,8 @@
 package com.example.waplan.user.domain;
 
 import com.example.waplan.base.BaseEntity;
+import com.example.waplan.goal.domain.Mandalart;
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
@@ -8,7 +10,10 @@ import jakarta.persistence.Enumerated;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
+import java.util.ArrayList;
+import java.util.List;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -58,6 +63,9 @@ public class User extends BaseEntity {
     private String nickname;
 
 
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
+    private List<Mandalart> mandalartList = new ArrayList<>();
+
     public User(final Long id, final  String userId, final String password, final String email, final String phoneNum, final String description, final String nickname, final Role role, final AlarmType morningAlarm, final AlarmType nightAlarm){
         this.id = id;
         this.userId = userId;
@@ -93,5 +101,9 @@ public class User extends BaseEntity {
     }
     public String roleName() {
         return role.name();
+    }
+
+    public void addMandalart(final Mandalart mandalart){
+        this.mandalartList.add(mandalart);
     }
 }
