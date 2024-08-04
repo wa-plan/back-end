@@ -14,7 +14,11 @@ import com.example.waplan.user.domain.repository.UserRepository;
 import com.example.waplan.user.exception.UserException;
 import com.example.waplan.user.exception.UserExceptionType;
 import jakarta.transaction.Transactional;
+
+import java.time.Duration;
 import java.time.LocalDate;
+import java.time.Period;
+
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -31,7 +35,7 @@ public class MandalartService {
     public Long addMandalart(User user, MandalartAddRequest request) {
         User persistUser = userRepository.findById(user.getId()).orElseThrow(() -> new UserException(
             UserExceptionType.NOT_FOUND_MEMBER));
-        Mandalart mandalart = new Mandalart(persistUser, request.getName(), request.getDescription(), request.getColor(), 0L, request.getDate().compareTo(LocalDate.now()), 0L);
+        Mandalart mandalart = new Mandalart(persistUser, request.getName(), request.getDescription(), request.getColor(), 0L, Period.between(request.getDate(), LocalDate.now()).getDays(), 0L);
         for(String picture : request.getPicture()) {
             Photo photo = new Photo(picture);
             photoRepository.save(photo);

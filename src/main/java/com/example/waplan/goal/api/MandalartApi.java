@@ -40,4 +40,6 @@ public class MandalartApi {
         Mandalart mandalart = mandalartService.getMandalart(user, mandalartId);
         return ResponseEntity.ok(MandalartResponse.of(mandalart));
     }
+
+    
 }
