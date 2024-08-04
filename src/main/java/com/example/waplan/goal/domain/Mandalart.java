@@ -39,6 +39,7 @@ public class Mandalart {
     @Column(nullable = true, length = 80)
     private String description;
 
+    @Column(nullable = false)
     @Enumerated(EnumType.STRING)
     private Status status;
 

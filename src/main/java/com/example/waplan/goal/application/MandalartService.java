@@ -3,8 +3,10 @@ package com.example.waplan.goal.application;
 import com.example.waplan.Photo.domain.Photo;
 import com.example.waplan.Photo.domain.repository.PhotoRepository;
 import com.example.waplan.goal.application.dto.MandalartAddRequest;
+import com.example.waplan.goal.application.dto.MandalartProgressRequest;
 import com.example.waplan.goal.domain.GoalDate;
 import com.example.waplan.goal.domain.Mandalart;
+import com.example.waplan.goal.domain.Status;
 import com.example.waplan.goal.domain.repository.GoalDateRepository;
 import com.example.waplan.goal.domain.repository.MandalartRepository;
 import com.example.waplan.goal.exception.MandalartException;
@@ -46,11 +48,20 @@ public class MandalartService {
         return mandalartRepository.save(mandalart).getId();
     }
 
-    public Mandalart getMandalart(User user, Long mandalartId) {
+    public Mandalart getMandalart(User user, String mandalartName) {
         User persistUser = userRepository.findById(user.getId()).orElseThrow(() -> new UserException(
             UserExceptionType.NOT_FOUND_MEMBER));
-        return mandalartRepository.findById(mandalartId).orElseThrow(() -> new MandalartException(
+        return mandalartRepository.findByUserIdAndName(persistUser.getId(), mandalartName).orElseThrow(() -> new MandalartException(
             MandalartExceptionType.NOT_FOUND_MANDALART));
+    }
+
+    public Status updateProgress(User user, MandalartProgressRequest request){
+        User persistUser = userRepository.findById(user.getId()).orElseThrow(() -> new UserException(
+                UserExceptionType.NOT_FOUND_MEMBER));
+        Mandalart mandalart = mandalartRepository.findByUserIdAndName(persistUser.getId(), request.getName()).orElseThrow(() -> new MandalartException(
+                MandalartExceptionType.NOT_FOUND_MANDALART));
+        mandalart.setStatus(request.getStatus());
+        return mandalart.getStatus();
     }
 
 
