@@ -2,8 +2,11 @@ package com.example.waplan.goal.application;
 
 import com.example.waplan.Photo.domain.Photo;
 import com.example.waplan.Photo.domain.repository.PhotoRepository;
+import com.example.waplan.goal.application.dto.BookmarkUpdateRequest;
+import com.example.waplan.goal.application.dto.BookmarkUpdateResponse;
 import com.example.waplan.goal.application.dto.MandalartAddRequest;
 import com.example.waplan.goal.application.dto.MandalartProgressRequest;
+import com.example.waplan.goal.domain.Bookmark;
 import com.example.waplan.goal.domain.GoalDate;
 import com.example.waplan.goal.domain.Mandalart;
 import com.example.waplan.goal.domain.Status;
@@ -48,21 +51,34 @@ public class MandalartService {
         return mandalartRepository.save(mandalart).getId();
     }
 
-    public Mandalart getMandalart(User user, String mandalartName) {
-        User persistUser = userRepository.findById(user.getId()).orElseThrow(() -> new UserException(
+    public Mandalart getMandalart(User user, Long mandalartId) {
+        userRepository.findById(user.getId()).orElseThrow(() -> new UserException(
             UserExceptionType.NOT_FOUND_MEMBER));
-        return mandalartRepository.findByUserIdAndName(persistUser.getId(), mandalartName).orElseThrow(() -> new MandalartException(
+        return mandalartRepository.findById(mandalartId).orElseThrow(() -> new MandalartException(
             MandalartExceptionType.NOT_FOUND_MANDALART));
     }
 
     public Status updateProgress(User user, MandalartProgressRequest request){
-        User persistUser = userRepository.findById(user.getId()).orElseThrow(() -> new UserException(
+        userRepository.findById(user.getId()).orElseThrow(() -> new UserException(
                 UserExceptionType.NOT_FOUND_MEMBER));
-        Mandalart mandalart = mandalartRepository.findByUserIdAndName(persistUser.getId(), request.getName()).orElseThrow(() -> new MandalartException(
+        Mandalart mandalart = mandalartRepository.findById(request.getId()).orElseThrow(() -> new MandalartException(
                 MandalartExceptionType.NOT_FOUND_MANDALART));
         mandalart.setStatus(request.getStatus());
         return mandalart.getStatus();
     }
+    public BookmarkUpdateResponse updateBookmark(User user, BookmarkUpdateRequest request){
+        userRepository.findById(user.getId()).orElseThrow(() -> new UserException(
+                UserExceptionType.NOT_FOUND_MEMBER));
+        Mandalart mandalart = mandalartRepository.findById(request.getId()).orElseThrow(() -> new MandalartException(
+                MandalartExceptionType.NOT_FOUND_MANDALART));
+        mandalart.setBookmark(request.getBookmark());
+        return new BookmarkUpdateResponse(mandalart.getBookmark());
+    }
 
+    public void deleteMandalart(User user, Long mandalartId) {
+        userRepository.findById(user.getId()).orElseThrow(() -> new UserException(
+                UserExceptionType.NOT_FOUND_MEMBER));
+        mandalartRepository.deleteById(mandalartId);
+    }
 
 }
