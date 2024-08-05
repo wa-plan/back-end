@@ -19,11 +19,13 @@ public class ThirdGoal {
     @Column(nullable = false, length = 20)
     private String name;
 
-    @Column(nullable = false)
-    @Enumerated(EnumType.STRING)
-    private Status status;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "second_goal_id")
     private SecondGoal secondGoal;
+
+    public ThirdGoal(final String name, final SecondGoal secondGoal) {
+        this.name = name;
+        this.secondGoal = secondGoal;
+    }
 }
