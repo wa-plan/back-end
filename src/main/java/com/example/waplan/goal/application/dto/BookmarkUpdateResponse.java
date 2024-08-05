@@ -1,13 +1,10 @@
 package com.example.waplan.goal.application.dto;
 
 import com.example.waplan.goal.domain.Bookmark;
-import lombok.AccessLevel;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 @Getter
-@NoArgsConstructor(access = AccessLevel.PRIVATE)
+@RequiredArgsConstructor
 @AllArgsConstructor(access = AccessLevel.PUBLIC)
 public class BookmarkUpdateResponse {
 

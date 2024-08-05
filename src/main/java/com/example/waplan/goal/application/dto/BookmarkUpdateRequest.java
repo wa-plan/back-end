@@ -1,14 +1,11 @@
 package com.example.waplan.goal.application.dto;
 
 import com.example.waplan.goal.domain.Bookmark;
-import lombok.AccessLevel;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.*;
+
 
 @Getter
-@NoArgsConstructor(access = AccessLevel.PRIVATE)
-@AllArgsConstructor
+@RequiredArgsConstructor
 public class BookmarkUpdateRequest {
     private Long id;
     private Bookmark bookmark;

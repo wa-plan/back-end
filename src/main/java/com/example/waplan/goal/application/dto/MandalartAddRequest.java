@@ -3,14 +3,12 @@ package com.example.waplan.goal.application.dto;
 
 import java.time.LocalDate;
 import java.util.List;
-import lombok.AccessLevel;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+
+import lombok.*;
+
 
 @Getter
-@NoArgsConstructor(access = AccessLevel.PRIVATE)
-@AllArgsConstructor
+@RequiredArgsConstructor
 public class MandalartAddRequest {
 
     private String name;

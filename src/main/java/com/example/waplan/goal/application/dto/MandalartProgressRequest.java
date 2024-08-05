@@ -1,14 +1,11 @@
 package com.example.waplan.goal.application.dto;
 
 import com.example.waplan.goal.domain.Status;
-import lombok.AccessLevel;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.*;
+
 
 @Getter
-@NoArgsConstructor(access = AccessLevel.PRIVATE)
-@AllArgsConstructor
+@RequiredArgsConstructor
 public class MandalartProgressRequest {
     private Long id;
     private Status status;

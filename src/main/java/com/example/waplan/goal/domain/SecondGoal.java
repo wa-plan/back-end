@@ -39,4 +39,10 @@ public class SecondGoal {
 
     @OneToMany(mappedBy = "secondGoal", cascade = CascadeType.ALL)
     private List<ThirdGoal> thridGoalList = new ArrayList<ThirdGoal>();
+
+    public SecondGoal(final String name, final String color, final Mandalart mandalart) {
+        this.name = name;
+        this.color = color;
+        this.mandalart = mandalart;
+    }
 }

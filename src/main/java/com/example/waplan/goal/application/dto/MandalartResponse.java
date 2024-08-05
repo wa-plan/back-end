@@ -4,13 +4,11 @@ import com.example.waplan.Photo.domain.Photo;
 import com.example.waplan.goal.domain.Mandalart;
 import com.example.waplan.goal.domain.Status;
 import java.util.List;
-import lombok.AccessLevel;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+
+import lombok.*;
 
 @Getter
-@NoArgsConstructor(access = AccessLevel.PRIVATE)
+@RequiredArgsConstructor
 @AllArgsConstructor(access = AccessLevel.PUBLIC)
 public class MandalartResponse {
 
