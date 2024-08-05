@@ -20,6 +20,9 @@ import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
 import java.time.Period;
+import java.util.Optional;
+
+import static groovyjarjarantlr4.v4.gui.Trees.save;
 
 @Service
 @RequiredArgsConstructor
@@ -40,9 +43,16 @@ public class MandalartService {
             photoRepository.save(photo);
             mandalart.addPhoto(photo);
         }
-        GoalDate goalDate = new GoalDate(request.getDate());
-        mandalart.setGoalDate(goalDateRepository.save(goalDate));
-        return mandalartRepository.save(mandalart).getId();
+        mandalartRepository.save(mandalart);
+        Optional<GoalDate> goalDate = goalDateRepository.findByDate(request.getDate());
+        if(goalDate.isPresent()) {
+            mandalart.setGoalDate(goalDate.get());
+        }
+        else{
+            GoalDate goalDate1 =  goalDateRepository.save(new GoalDate(request.getDate()));
+            mandalart.setGoalDate(goalDate1);
+        }
+        return mandalart.getId();
     }
 
     public Mandalart getMandalart(User user, Long mandalartId) {
