@@ -54,4 +54,10 @@ public class MandalartApi {
         BookmarkUpdateResponse response = mandalartService.updateBookmark(user, bookmarkUpdateRequest);
         return ResponseEntity.ok(response);
     }
+
+    @GetMapping("/all/{mandalartId}")
+    @PreAuthorize("hasRole('USER') or hasRole('ADMIN')")
+    public ResponseEntity<MandalartAllResponse> findMandalartAll(@CurrentUser User user, @Valid @PathVariable("mandalartId") Long mandalartId){
+        return ResponseEntity.ok(mandalartService.findMandalart(user, mandalartId));
+    }
 }

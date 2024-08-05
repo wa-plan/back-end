@@ -30,7 +30,7 @@ public class ThirdGoalApi {
         return ResponseEntity.created(URI.create("/api/thirdgoal/" + thirdGoalId)).build();
     }
 
-    @PutMapping("/")
+    @PutMapping()
     @PreAuthorize("hasRole('USER') or hasRole('ADMIN')")
     public ResponseEntity<Void> updateName(@CurrentUser User user, @Valid @RequestBody ThirdGoalUpdateRequest thirdGoalUpdateRequest){
         thirdGoalService.updateName(user, thirdGoalUpdateRequest);

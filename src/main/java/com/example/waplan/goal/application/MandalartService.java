@@ -2,10 +2,7 @@ package com.example.waplan.goal.application;
 
 import com.example.waplan.Photo.domain.Photo;
 import com.example.waplan.Photo.domain.repository.PhotoRepository;
-import com.example.waplan.goal.application.dto.BookmarkUpdateRequest;
-import com.example.waplan.goal.application.dto.BookmarkUpdateResponse;
-import com.example.waplan.goal.application.dto.MandalartAddRequest;
-import com.example.waplan.goal.application.dto.MandalartProgressRequest;
+import com.example.waplan.goal.application.dto.*;
 import com.example.waplan.goal.domain.Bookmark;
 import com.example.waplan.goal.domain.GoalDate;
 import com.example.waplan.goal.domain.Mandalart;
@@ -81,4 +78,11 @@ public class MandalartService {
         mandalartRepository.deleteById(mandalartId);
     }
 
+    public MandalartAllResponse findMandalart(User user, Long mandalartId) {
+        userRepository.findById(user.getId()).orElseThrow(() -> new UserException(
+                UserExceptionType.NOT_FOUND_MEMBER));
+        Mandalart mandalart = mandalartRepository.findById(mandalartId).orElseThrow(() -> new MandalartException(
+                MandalartExceptionType.NOT_FOUND_MANDALART));
+        return MandalartAllResponse.of(mandalart);
+    }
 }
