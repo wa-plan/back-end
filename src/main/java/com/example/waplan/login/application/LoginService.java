@@ -1,16 +1,12 @@
 package com.example.waplan.login.application;
 
 import com.example.waplan.login.application.dto.FindUserIdRequest;
-import com.example.waplan.login.application.dto.ResetPasswordRequest;
 import com.example.waplan.login.application.dto.SignUpRequest;
 import com.example.waplan.login.exception.AuthException;
 import com.example.waplan.login.exception.AuthExceptionType;
 import com.example.waplan.user.domain.Role;
 import com.example.waplan.user.domain.User;
 import com.example.waplan.user.domain.repository.UserRepository;
-import jakarta.mail.internet.MimeMessage;
-import java.util.Objects;
-import java.util.Optional;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import org.springframework.mail.javamail.JavaMailSender;

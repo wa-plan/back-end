@@ -3,14 +3,10 @@ package com.example.waplan.user.application.dto;
 import com.example.waplan.user.domain.AlarmType;
 import com.example.waplan.user.domain.Role;
 import com.example.waplan.user.domain.User;
-import jakarta.persistence.Column;
-import jakarta.persistence.EnumType;
-import jakarta.persistence.Enumerated;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import org.hibernate.annotations.ColumnDefault;
 
 @Getter
 @NoArgsConstructor(access = AccessLevel.PRIVATE)

@@ -1,8 +1,6 @@
 package com.example.waplan.goal.api;
 
 import com.example.waplan.goal.application.ThirdGoalService;
-import com.example.waplan.goal.application.dto.SecondGoalAddRequest;
-import com.example.waplan.goal.application.dto.SecondGoalUpdateRequest;
 import com.example.waplan.goal.application.dto.ThirdGoalAddRequest;
 import com.example.waplan.goal.application.dto.ThirdGoalUpdateRequest;
 import com.example.waplan.security.CurrentUser;

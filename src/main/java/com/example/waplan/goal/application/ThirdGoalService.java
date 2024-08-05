@@ -1,15 +1,15 @@
 package com.example.waplan.goal.application;
 
-import com.example.waplan.goal.application.dto.SecondGoalAddRequest;
-import com.example.waplan.goal.application.dto.SecondGoalUpdateRequest;
 import com.example.waplan.goal.application.dto.ThirdGoalAddRequest;
 import com.example.waplan.goal.application.dto.ThirdGoalUpdateRequest;
-import com.example.waplan.goal.domain.Mandalart;
 import com.example.waplan.goal.domain.SecondGoal;
 import com.example.waplan.goal.domain.ThirdGoal;
 import com.example.waplan.goal.domain.repository.SecondGoalRepository;
 import com.example.waplan.goal.domain.repository.ThirdGoalRepository;
-import com.example.waplan.goal.exception.*;
+import com.example.waplan.goal.exception.SecondGoalException;
+import com.example.waplan.goal.exception.SecondGoalExceptionType;
+import com.example.waplan.goal.exception.ThirdGoalException;
+import com.example.waplan.goal.exception.ThirdGoalExceptionType;
 import com.example.waplan.user.domain.User;
 import com.example.waplan.user.domain.repository.UserRepository;
 import com.example.waplan.user.exception.UserException;

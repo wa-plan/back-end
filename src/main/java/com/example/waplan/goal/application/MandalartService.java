@@ -3,7 +3,6 @@ package com.example.waplan.goal.application;
 import com.example.waplan.Photo.domain.Photo;
 import com.example.waplan.Photo.domain.repository.PhotoRepository;
 import com.example.waplan.goal.application.dto.*;
-import com.example.waplan.goal.domain.Bookmark;
 import com.example.waplan.goal.domain.GoalDate;
 import com.example.waplan.goal.domain.Mandalart;
 import com.example.waplan.goal.domain.Status;
@@ -16,13 +15,11 @@ import com.example.waplan.user.domain.repository.UserRepository;
 import com.example.waplan.user.exception.UserException;
 import com.example.waplan.user.exception.UserExceptionType;
 import jakarta.transaction.Transactional;
-
-import java.time.Duration;
-import java.time.LocalDate;
-import java.time.Period;
-
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+
+import java.time.LocalDate;
+import java.time.Period;
 
 @Service
 @RequiredArgsConstructor

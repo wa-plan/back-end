@@ -3,9 +3,12 @@ package com.example.waplan.goal.application.dto;
 import com.example.waplan.Photo.domain.Photo;
 import com.example.waplan.goal.domain.Mandalart;
 import com.example.waplan.goal.domain.Status;
-import java.util.List;
+import lombok.AccessLevel;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.RequiredArgsConstructor;
 
-import lombok.*;
+import java.util.List;
 
 @Getter
 @RequiredArgsConstructor

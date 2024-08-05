@@ -1,6 +1,5 @@
 package com.example.waplan.user.application;
 
-import com.example.waplan.security.CurrentUser;
 import com.example.waplan.user.application.dto.UserProfileDto;
 import com.example.waplan.user.domain.User;
 import com.example.waplan.user.domain.UserProfile;

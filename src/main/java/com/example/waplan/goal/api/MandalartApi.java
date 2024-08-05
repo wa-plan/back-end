@@ -5,7 +5,6 @@ import com.example.waplan.goal.application.dto.*;
 import com.example.waplan.goal.domain.Mandalart;
 import com.example.waplan.goal.domain.Status;
 import com.example.waplan.security.CurrentUser;
-import com.example.waplan.user.application.dto.UserResponse;
 import com.example.waplan.user.domain.User;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;

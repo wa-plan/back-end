@@ -1,7 +1,7 @@
 package com.example.waplan.goal.application.dto;
 
-import com.example.waplan.user.domain.AlarmType;
-import lombok.*;
+import lombok.Getter;
+import lombok.RequiredArgsConstructor;
 
 @Getter
 @RequiredArgsConstructor

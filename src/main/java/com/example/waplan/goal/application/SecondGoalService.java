@@ -11,7 +11,6 @@ import com.example.waplan.goal.exception.MandalartException;
 import com.example.waplan.goal.exception.MandalartExceptionType;
 import com.example.waplan.goal.exception.SecondGoalException;
 import com.example.waplan.goal.exception.SecondGoalExceptionType;
-import com.example.waplan.user.application.UserService;
 import com.example.waplan.user.domain.User;
 import com.example.waplan.user.domain.repository.UserRepository;
 import com.example.waplan.user.exception.UserException;
