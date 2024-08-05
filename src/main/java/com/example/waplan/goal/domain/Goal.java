@@ -26,7 +26,16 @@ public class Goal {
     @Enumerated(EnumType.STRING)
     private Status attainment;
 
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "third_goal_id")
+    private ThirdGoal thirdGoal;
+
     @OneToMany(mappedBy = "goal", cascade = CascadeType.ALL)
     private List<GoalDateMap> goalDateMapList = new ArrayList<GoalDateMap>();
 
+    public Goal(final String name, final Status attainment, final ThirdGoal thirdGoal) {
+        this.name = name;
+        this.attainment = attainment;
+        this.thirdGoal = thirdGoal;
+    }
 }

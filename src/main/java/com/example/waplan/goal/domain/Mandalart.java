@@ -41,7 +41,7 @@ public class Mandalart {
     @OneToMany(mappedBy = "mandalart", cascade = CascadeType.ALL)
     private List<SecondGoal> secondGoalList = new ArrayList<SecondGoal>();
 
-    @OneToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "goal_date_id")
     private GoalDate goalDate;
 

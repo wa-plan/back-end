@@ -23,4 +23,9 @@ public class GoalDateMap {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "goal_date_id")
     private GoalDate goalDate;
+
+    public GoalDateMap(Goal goal, GoalDate goalDate) {
+        this.goal = goal;
+        this.goalDate = goalDate;
+    }
 }

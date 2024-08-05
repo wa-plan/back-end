@@ -24,8 +24,8 @@ public class GoalDate {
     @Column(nullable = false)
     private LocalDate date;
 
-    @OneToOne(mappedBy = "goalDate")
-    private Mandalart mandalart;
+    @OneToMany(mappedBy = "goalDate", cascade = CascadeType.ALL)
+    private List<Mandalart> mandalartList = new ArrayList<>();
 
     @OneToMany(mappedBy = "goalDate", cascade = CascadeType.ALL)
     private List<GoalDateMap> goalDateMapList = new ArrayList<GoalDateMap>();
