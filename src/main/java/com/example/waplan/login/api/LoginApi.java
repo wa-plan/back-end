@@ -1,13 +1,12 @@
 package com.example.waplan.login.api;
 
 import com.example.waplan.login.application.LoginService;
+import com.example.waplan.login.application.MailService;
 import com.example.waplan.login.application.dto.FindUserIdRequest;
 import com.example.waplan.login.application.dto.ResetPasswordRequest;
 import com.example.waplan.login.application.dto.SignUpRequest;
-import com.example.waplan.login.application.MailService;
 import com.example.waplan.login.domain.EmailMessage;
 import jakarta.validation.Valid;
-import java.net.URI;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -16,6 +15,8 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+
+import java.net.URI;
 
 @RequiredArgsConstructor
 @RestController

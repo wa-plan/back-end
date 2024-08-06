@@ -1,20 +1,18 @@
 package com.example.waplan.user.domain;
 
 import com.example.waplan.base.BaseEntity;
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.EnumType;
-import jakarta.persistence.Enumerated;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import jakarta.persistence.Table;
+import com.example.waplan.goal.domain.GoalDate;
+import com.example.waplan.goal.domain.Mandalart;
+import jakarta.persistence.*;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.hibernate.annotations.ColumnDefault;
 import org.hibernate.annotations.DynamicInsert;
+
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @Getter
@@ -57,6 +55,11 @@ public class User extends BaseEntity {
     @Column(length = 15)
     private String nickname;
 
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
+    private List<GoalDate> goalDates = new ArrayList<>();
+
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
+    private List<Mandalart> mandalartList = new ArrayList<>();
 
     public User(final Long id, final  String userId, final String password, final String email, final String phoneNum, final String description, final String nickname, final Role role, final AlarmType morningAlarm, final AlarmType nightAlarm){
         this.id = id;
@@ -93,5 +96,9 @@ public class User extends BaseEntity {
     }
     public String roleName() {
         return role.name();
+    }
+
+    public void addMandalart(final Mandalart mandalart){
+        this.mandalartList.add(mandalart);
     }
 }

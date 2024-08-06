@@ -2,7 +2,6 @@ package com.example.waplan.cheering.exception;
 
 import com.example.waplan.base.BaseException;
 import com.example.waplan.base.BaseExceptionType;
-import com.example.waplan.user.exception.UserExceptionType;
 
 public class CheeringException extends BaseException {
 

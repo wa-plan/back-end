@@ -2,7 +2,6 @@ package com.example.waplan.security;
 
 import com.example.waplan.user.domain.User;
 import com.example.waplan.user.domain.repository.UserRepository;
-import java.util.Optional;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -10,6 +9,8 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor(access = AccessLevel.PUBLIC)

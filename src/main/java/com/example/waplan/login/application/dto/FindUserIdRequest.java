@@ -12,7 +12,7 @@ import lombok.NoArgsConstructor;
 public class FindUserIdRequest {
 
     @NotBlank
-    private String nickname;
+    private String phoneNum;
     @NotBlank
     private String email;
 
