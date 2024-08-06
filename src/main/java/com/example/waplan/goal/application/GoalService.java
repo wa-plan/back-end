@@ -1,13 +1,14 @@
 package com.example.waplan.goal.application;
 
 import com.example.waplan.goal.application.dto.GoalAddRequest;
+import com.example.waplan.goal.application.dto.GoalUpdateRequest;
+import com.example.waplan.goal.application.dto.GoalUpdateStatusRequest;
 import com.example.waplan.goal.domain.*;
-import com.example.waplan.goal.domain.repository.GoalDateMapRepository;
-import com.example.waplan.goal.domain.repository.GoalDateRepository;
-import com.example.waplan.goal.domain.repository.GoalRepository;
-import com.example.waplan.goal.domain.repository.ThirdGoalRepository;
+import com.example.waplan.goal.domain.repository.*;
 import com.example.waplan.goal.exception.GoalException;
 import com.example.waplan.goal.exception.GoalExceptionType;
+import com.example.waplan.goal.exception.MandalartException;
+import com.example.waplan.goal.exception.MandalartExceptionType;
 import com.example.waplan.user.domain.User;
 import com.example.waplan.user.domain.repository.UserRepository;
 import com.example.waplan.user.exception.UserException;
@@ -32,12 +33,16 @@ public class GoalService {
     private final GoalDateRepository goalDateRepository;
     private final GoalDateMapRepository goalDateMapRepository;
     private final GoalRepository goalRepository;
+    private final MandalartRepository mandalartRepository;
 
     public Long addGoal(User user, GoalAddRequest goalAddRequest){
         userRepository.findById(user.getId()).orElseThrow(() -> new UserException(
                 UserExceptionType.NOT_FOUND_MEMBER));
         ThirdGoal thirdGoal = thirdGoalRepository.findById(goalAddRequest.getThirdGoalId()).orElseThrow(() -> new GoalException(
                 GoalExceptionType.NOT_FOUND_GOAL));
+        Mandalart mandalart = mandalartRepository.findById(thirdGoal.getSecondGoal().getMandalart().getId()).orElseThrow(() -> new MandalartException(
+                MandalartExceptionType.NOT_FOUND_MANDALART));
+
         Goal goal = new Goal(goalAddRequest.getName(), Status.IN_PROGRESS, thirdGoal);
         goalRepository.save(goal);
         List<GoalDateMap> goalDateMapList = goalAddRequest.getDates().stream()
@@ -54,6 +59,39 @@ public class GoalService {
                     return goalDateMap;
                 }).toList();
         goal.setGoalDateMapList(goalDateMapList);
+        mandalart.setGoalCount(mandalart.getGoalCount() + 1);
         return goal.getId();
+    }
+
+    public void updateGoalStatus(User user, GoalUpdateStatusRequest request){
+        userRepository.findById(user.getId()).orElseThrow(() -> new UserException(
+                UserExceptionType.NOT_FOUND_MEMBER));
+        Goal goal = goalRepository.findById(request.getGoalId()).orElseThrow(() -> new GoalException(
+                GoalExceptionType.NOT_FOUND_GOAL));
+        Mandalart mandalart = mandalartRepository.findById(goal.getThirdGoal().getSecondGoal().getMandalart().getId()).orElseThrow(() -> new MandalartException(
+                MandalartExceptionType.NOT_FOUND_MANDALART));
+        goal.setAttainment(request.getAttainment());
+        if(request.getAttainment() == Status.SUCCESS){
+            mandalart.setAttainmentCount(mandalart.getAttainmentCount() + 1);
+        }
+    }
+
+    public void updateGoal(User user, GoalUpdateRequest request){
+        userRepository.findById(user.getId()).orElseThrow(() -> new UserException(
+                UserExceptionType.NOT_FOUND_MEMBER));
+        Goal goal = goalRepository.findById(request.getGoalId()).orElseThrow(() -> new GoalException(
+                GoalExceptionType.NOT_FOUND_GOAL));
+        goal.setName(request.getNewGoal());
+    }
+
+    public void deleteGoal(User user, Long goalId){
+        userRepository.findById(user.getId()).orElseThrow(() -> new UserException(
+                UserExceptionType.NOT_FOUND_MEMBER));
+        Goal goal = goalRepository.findById(goalId).orElseThrow(() -> new GoalException(
+                GoalExceptionType.NOT_FOUND_GOAL));
+        Mandalart mandalart = mandalartRepository.findById(goal.getThirdGoal().getSecondGoal().getMandalart().getId()).orElseThrow(() -> new MandalartException(
+                MandalartExceptionType.NOT_FOUND_MANDALART));
+        mandalart.setGoalCount(mandalart.getGoalCount() - 1);
+        goalRepository.delete(goal);
     }
 }
