@@ -1,6 +1,7 @@
 package com.example.waplan.goal.domain;
 
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.AccessLevel;
 import lombok.Getter;
@@ -28,10 +29,12 @@ public class Goal {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "third_goal_id")
+    @JsonIgnore
     private ThirdGoal thirdGoal;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "mandalart_id")
+    @JsonIgnore
     private Mandalart mandalart;
 
     @OneToMany(mappedBy = "goal", cascade = CascadeType.ALL)

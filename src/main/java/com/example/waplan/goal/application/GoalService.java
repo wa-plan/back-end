@@ -3,10 +3,7 @@ package com.example.waplan.goal.application;
 import com.example.waplan.goal.application.dto.*;
 import com.example.waplan.goal.domain.*;
 import com.example.waplan.goal.domain.repository.*;
-import com.example.waplan.goal.exception.GoalException;
-import com.example.waplan.goal.exception.GoalExceptionType;
-import com.example.waplan.goal.exception.MandalartException;
-import com.example.waplan.goal.exception.MandalartExceptionType;
+import com.example.waplan.goal.exception.*;
 import com.example.waplan.user.domain.User;
 import com.example.waplan.user.domain.repository.UserRepository;
 import com.example.waplan.user.exception.UserException;
@@ -15,11 +12,8 @@ import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
-import java.time.LocalDate;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
-import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -91,9 +85,16 @@ public class GoalService {
         mandalart.setGoalCount(mandalart.getGoalCount() - 1);
         goalRepository.delete(goal);
     }
-//    public GoalResponse getGoal(User user, GoalRequest request){
-//        userRepository.findById(user.getId()).orElseThrow(() -> new UserException(
-//                UserExceptionType.NOT_FOUND_MEMBER));
-//
-//    }
+    public List<GoalResponse> getGoal(User user, GoalRequest request){
+        User persistUser = userRepository.findById(user.getId()).orElseThrow(() -> new UserException(
+                UserExceptionType.NOT_FOUND_MEMBER));
+        GoalDate goalDate = goalDateRepository.findByUserAndDate(persistUser, request.getDate()).orElseThrow(() -> new GoalDateException(
+                GoalDateExceptionType.NOT_FOUND_GOAL_DATE));
+        List<GoalDateMap> goalDateMap = goalDateMapRepository.findByGoalDate(goalDate);
+        List<Goal> goals = goalDateMap.stream().map(
+                goalDateMap1 -> goalRepository.findById(goalDateMap1.getGoal().getId()).orElseThrow(() -> new GoalDateException(
+                        GoalDateExceptionType.NOT_FOUND_GOAL_DATE))
+        ).toList();
+        return GoalResponse.listOf(goals);
+    }
 }

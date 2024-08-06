@@ -6,12 +6,12 @@ import com.example.waplan.security.CurrentUser;
 import com.example.waplan.user.domain.User;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
-import org.apache.coyote.Response;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.net.URI;
+import java.util.List;
 
 @RestController
 @RequiredArgsConstructor
@@ -47,11 +47,11 @@ public class GoalApi {
         return ResponseEntity.noContent().build();
     }
 
-//    @GetMapping
-//    @PreAuthorize("hasRole('USER') or hasRole('ADMIN')")
-//    public ResponseEntity<GoalResponse> getGoal(@CurrentUser User user, @Valid @RequestBody GoalRequest goalRequest){
-//        return ResponseEntity.ok(goalService.getGoal(user, goalRequest));
-//    }
+    @GetMapping
+    @PreAuthorize("hasRole('USER') or hasRole('ADMIN')")
+    public ResponseEntity<List<GoalResponse>> getGoal(@CurrentUser User user, @Valid @RequestBody GoalRequest goalRequest){
+        return ResponseEntity.ok(goalService.getGoal(user, goalRequest));
+    }
 
 
 }
