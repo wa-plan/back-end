@@ -62,6 +62,9 @@ public class Mandalart {
     @Column(nullable = false)
     private Long goalCount;
 
+    @OneToMany(mappedBy = "mandalart", cascade = CascadeType.ALL)
+    private List<Goal> goals;
+
     public Mandalart(final User user, final String name, final String description, final String color, final Long attainmentCount, final Integer dDay, final Long goalCount) {
         this.user = user;
         this.name = name;

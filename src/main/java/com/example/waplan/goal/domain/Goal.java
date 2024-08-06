@@ -30,12 +30,17 @@ public class Goal {
     @JoinColumn(name = "third_goal_id")
     private ThirdGoal thirdGoal;
 
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "mandalart_id")
+    private Mandalart mandalart;
+
     @OneToMany(mappedBy = "goal", cascade = CascadeType.ALL)
     private List<GoalDateMap> goalDateMapList = new ArrayList<GoalDateMap>();
 
-    public Goal(final String name, final Status attainment, final ThirdGoal thirdGoal) {
+    public Goal(final String name, final Status attainment, final Mandalart mandalart, final ThirdGoal thirdGoal) {
         this.name = name;
         this.attainment = attainment;
+        this.mandalart = mandalart;
         this.thirdGoal = thirdGoal;
     }
 }

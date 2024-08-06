@@ -1,9 +1,7 @@
 package com.example.waplan.goal.api;
 
 import com.example.waplan.goal.application.GoalService;
-import com.example.waplan.goal.application.dto.GoalAddRequest;
-import com.example.waplan.goal.application.dto.GoalUpdateRequest;
-import com.example.waplan.goal.application.dto.GoalUpdateStatusRequest;
+import com.example.waplan.goal.application.dto.*;
 import com.example.waplan.security.CurrentUser;
 import com.example.waplan.user.domain.User;
 import jakarta.validation.Valid;
@@ -47,6 +45,12 @@ public class GoalApi {
     public ResponseEntity<Void> deleteGoal(@CurrentUser User user, @Valid @PathVariable("goalId") Long goalId ){
         goalService.deleteGoal(user, goalId);
         return ResponseEntity.noContent().build();
+    }
+
+    @GetMapping
+    @PreAuthorize("hasRole('USER') or hasRole('ADMIN')")
+    public ResponseEntity<GoalResponse> getGoal(@CurrentUser User user, @Valid @RequestBody GoalRequest goalRequest){
+        return ResponseEntity.ok(goalService.getGoal(user, goalRequest));
     }
 
 

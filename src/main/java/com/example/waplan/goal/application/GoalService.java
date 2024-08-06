@@ -1,8 +1,6 @@
 package com.example.waplan.goal.application;
 
-import com.example.waplan.goal.application.dto.GoalAddRequest;
-import com.example.waplan.goal.application.dto.GoalUpdateRequest;
-import com.example.waplan.goal.application.dto.GoalUpdateStatusRequest;
+import com.example.waplan.goal.application.dto.*;
 import com.example.waplan.goal.domain.*;
 import com.example.waplan.goal.domain.repository.*;
 import com.example.waplan.goal.exception.GoalException;
@@ -42,8 +40,7 @@ public class GoalService {
                 GoalExceptionType.NOT_FOUND_GOAL));
         Mandalart mandalart = mandalartRepository.findById(thirdGoal.getSecondGoal().getMandalart().getId()).orElseThrow(() -> new MandalartException(
                 MandalartExceptionType.NOT_FOUND_MANDALART));
-
-        Goal goal = new Goal(goalAddRequest.getName(), Status.IN_PROGRESS, thirdGoal);
+        Goal goal = new Goal(goalAddRequest.getName(), Status.IN_PROGRESS, mandalart, thirdGoal);
         goalRepository.save(goal);
         List<GoalDateMap> goalDateMapList = goalAddRequest.getDates().stream()
                 .map(date -> {
@@ -68,7 +65,7 @@ public class GoalService {
                 UserExceptionType.NOT_FOUND_MEMBER));
         Goal goal = goalRepository.findById(request.getGoalId()).orElseThrow(() -> new GoalException(
                 GoalExceptionType.NOT_FOUND_GOAL));
-        Mandalart mandalart = mandalartRepository.findById(goal.getThirdGoal().getSecondGoal().getMandalart().getId()).orElseThrow(() -> new MandalartException(
+        Mandalart mandalart = mandalartRepository.findById(goal.getMandalart().getId()).orElseThrow(() -> new MandalartException(
                 MandalartExceptionType.NOT_FOUND_MANDALART));
         goal.setAttainment(request.getAttainment());
         if(request.getAttainment() == Status.SUCCESS){
@@ -89,9 +86,14 @@ public class GoalService {
                 UserExceptionType.NOT_FOUND_MEMBER));
         Goal goal = goalRepository.findById(goalId).orElseThrow(() -> new GoalException(
                 GoalExceptionType.NOT_FOUND_GOAL));
-        Mandalart mandalart = mandalartRepository.findById(goal.getThirdGoal().getSecondGoal().getMandalart().getId()).orElseThrow(() -> new MandalartException(
+        Mandalart mandalart = mandalartRepository.findById(goal.getMandalart().getId()).orElseThrow(() -> new MandalartException(
                 MandalartExceptionType.NOT_FOUND_MANDALART));
         mandalart.setGoalCount(mandalart.getGoalCount() - 1);
         goalRepository.delete(goal);
+    }
+    public GoalResponse getGoal(User user, GoalRequest request){
+        userRepository.findById(user.getId()).orElseThrow(() -> new UserException(
+                UserExceptionType.NOT_FOUND_MEMBER));
+
     }
 }
