@@ -55,6 +55,9 @@ public class User extends BaseEntity {
     @Column(length = 15)
     private String nickname;
 
+    @Column(nullable = false)
+    private String profile;
+
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
     private List<GoalDate> goalDates = new ArrayList<>();
 
@@ -73,7 +76,7 @@ public class User extends BaseEntity {
         this.morningAlarm = morningAlarm;
         this.nightAlarm = nightAlarm;
     }
-    public User(final String userId, final String password, final String email, final String phoneNum, final String description, final String nickname, final Role role){
+    public User(final String userId, final String password, final String email, final String phoneNum, final String description, final String nickname, final Role role, final String profile){
         this.userId = userId;
         this.email = email;
         this.description = description;
@@ -81,6 +84,7 @@ public class User extends BaseEntity {
         this.password = password;
         this.phoneNum = phoneNum;
         this.role = role;
+        this.profile = profile;
     }
 
     public void updateMorningAlarm(final AlarmType morningAlarm){

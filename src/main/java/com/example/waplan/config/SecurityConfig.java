@@ -94,6 +94,8 @@ public class SecurityConfig {
                 .requestMatchers(antMatcher(HttpMethod.POST, "/api/thirdgoal/**")).hasRole("USER")
                 .requestMatchers(antMatcher(HttpMethod.POST, "/api/goal/**")).hasRole("USER")
                 .requestMatchers(antMatcher(HttpMethod.GET, "/api/goal")).hasRole("USER")
+                .requestMatchers(antMatcher(HttpMethod.POST, "/s3/upload")).hasRole("USER")
+                .requestMatchers(antMatcher(HttpMethod.GET, "/s3/delete")).hasRole("USER")
                 .anyRequest().authenticated()
             );
 

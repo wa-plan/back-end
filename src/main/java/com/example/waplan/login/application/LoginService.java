@@ -10,6 +10,7 @@ import com.example.waplan.user.domain.repository.UserRepository;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import org.springframework.mail.javamail.JavaMailSender;
+import org.springframework.security.core.parameters.P;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -25,8 +26,15 @@ public class LoginService {
         if(userRepository.existsByUserId(signUpRequest.getUserId())){
             throw new AuthException(AuthExceptionType.DUPLICATED_ID);
         }
+        String imgUrl;
+        if(signUpRequest.getImageUrl() == null){
+            imgUrl = "https://dodakkibucket.s3.ap-northeast-2.amazonaws.com/basicProfile.png";
+        }
+        else {
+            imgUrl = signUpRequest.getImageUrl();
+        }
         User user = new User(signUpRequest.getUserId(), signUpRequest.getPassword(), signUpRequest.getEmail(), signUpRequest.getPhoneNum(), signUpRequest.getDescription(), signUpRequest.getNickname(),
-            Role.ROLE_USER);
+            Role.ROLE_USER, imgUrl);
 
         User result = userRepository.save(user);
         return result.getId();

@@ -28,4 +28,7 @@ public class SignUpRequest {
     @NotBlank
     private String nickname;
 
+    @NotBlank
+    private String imageUrl;
+
 }
