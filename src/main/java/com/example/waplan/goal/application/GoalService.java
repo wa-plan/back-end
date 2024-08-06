@@ -34,7 +34,7 @@ public class GoalService {
     private final MandalartRepository mandalartRepository;
 
     public Long addGoal(User user, GoalAddRequest goalAddRequest){
-        userRepository.findById(user.getId()).orElseThrow(() -> new UserException(
+        User persistUser = userRepository.findById(user.getId()).orElseThrow(() -> new UserException(
                 UserExceptionType.NOT_FOUND_MEMBER));
         ThirdGoal thirdGoal = thirdGoalRepository.findById(goalAddRequest.getThirdGoalId()).orElseThrow(() -> new GoalException(
                 GoalExceptionType.NOT_FOUND_GOAL));
@@ -45,12 +45,12 @@ public class GoalService {
         List<GoalDateMap> goalDateMapList = goalAddRequest.getDates().stream()
                 .map(date -> {
                     GoalDateMap goalDateMap;
-                    Optional<GoalDate> goalDate = goalDateRepository.findByDate(date);
+                    Optional<GoalDate> goalDate = goalDateRepository.findByUserAndDate(persistUser, date);
                     if(goalDate.isPresent()){
                         goalDateMap = goalDateMapRepository.save(new GoalDateMap(goal, goalDate.get()));
                     }
                     else{
-                        GoalDate goalDate1 = goalDateRepository.save(new GoalDate(date));
+                        GoalDate goalDate1 = goalDateRepository.save(new GoalDate(persistUser, date));
                         goalDateMap = goalDateMapRepository.save(new GoalDateMap(goal, goalDate1));
                     }
                     return goalDateMap;
@@ -91,9 +91,9 @@ public class GoalService {
         mandalart.setGoalCount(mandalart.getGoalCount() - 1);
         goalRepository.delete(goal);
     }
-    public GoalResponse getGoal(User user, GoalRequest request){
-        userRepository.findById(user.getId()).orElseThrow(() -> new UserException(
-                UserExceptionType.NOT_FOUND_MEMBER));
-
-    }
+//    public GoalResponse getGoal(User user, GoalRequest request){
+//        userRepository.findById(user.getId()).orElseThrow(() -> new UserException(
+//                UserExceptionType.NOT_FOUND_MEMBER));
+//
+//    }
 }

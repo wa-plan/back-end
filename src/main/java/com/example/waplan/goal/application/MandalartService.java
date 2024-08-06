@@ -49,7 +49,7 @@ public class MandalartService {
             mandalart.setGoalDate(goalDate.get());
         }
         else{
-            GoalDate goalDate1 =  goalDateRepository.save(new GoalDate(request.getDate()));
+            GoalDate goalDate1 =  goalDateRepository.save(new GoalDate(persistUser, request.getDate()));
             mandalart.setGoalDate(goalDate1);
         }
         return mandalart.getId();

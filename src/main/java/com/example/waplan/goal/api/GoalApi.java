@@ -47,11 +47,11 @@ public class GoalApi {
         return ResponseEntity.noContent().build();
     }
 
-    @GetMapping
-    @PreAuthorize("hasRole('USER') or hasRole('ADMIN')")
-    public ResponseEntity<GoalResponse> getGoal(@CurrentUser User user, @Valid @RequestBody GoalRequest goalRequest){
-        return ResponseEntity.ok(goalService.getGoal(user, goalRequest));
-    }
+//    @GetMapping
+//    @PreAuthorize("hasRole('USER') or hasRole('ADMIN')")
+//    public ResponseEntity<GoalResponse> getGoal(@CurrentUser User user, @Valid @RequestBody GoalRequest goalRequest){
+//        return ResponseEntity.ok(goalService.getGoal(user, goalRequest));
+//    }
 
 
 }

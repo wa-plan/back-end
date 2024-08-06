@@ -1,6 +1,7 @@
 package com.example.waplan.goal.domain;
 
 
+import com.example.waplan.user.domain.User;
 import jakarta.persistence.*;
 import lombok.AccessLevel;
 import lombok.Getter;
@@ -24,13 +25,18 @@ public class GoalDate {
     @Column(nullable = false)
     private LocalDate date;
 
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "user_id")
+    private User user;
+
     @OneToMany(mappedBy = "goalDate", cascade = CascadeType.ALL)
     private List<Mandalart> mandalartList = new ArrayList<>();
 
     @OneToMany(mappedBy = "goalDate", cascade = CascadeType.ALL)
     private List<GoalDateMap> goalDateMapList = new ArrayList<GoalDateMap>();
 
-    public GoalDate(final LocalDate date) {
+    public GoalDate(final User user, final LocalDate date) {
+        this.user = user;
         this.date = date;
     }
 }

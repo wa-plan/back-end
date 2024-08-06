@@ -1,6 +1,7 @@
 package com.example.waplan.user.domain;
 
 import com.example.waplan.base.BaseEntity;
+import com.example.waplan.goal.domain.GoalDate;
 import com.example.waplan.goal.domain.Mandalart;
 import jakarta.persistence.*;
 import lombok.AccessLevel;
@@ -54,6 +55,8 @@ public class User extends BaseEntity {
     @Column(length = 15)
     private String nickname;
 
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
+    private List<GoalDate> goalDates = new ArrayList<>();
 
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
     private List<Mandalart> mandalartList = new ArrayList<>();
