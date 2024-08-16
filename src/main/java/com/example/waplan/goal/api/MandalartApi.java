@@ -12,6 +12,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
+import java.net.URI;
+
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/api/mandalart")
@@ -21,9 +23,9 @@ public class MandalartApi {
 
     @PostMapping("/add")
     @PreAuthorize("hasRole('USER') or hasRole('ADMIN')")
-    public ResponseEntity<Long> addFirstGoal(@CurrentUser User user, @Valid @RequestBody MandalartAddRequest mandalartAddRequest) {
+    public ResponseEntity<Void> addFirstGoal(@CurrentUser User user, @Valid @RequestBody MandalartAddRequest mandalartAddRequest) {
         Long mandalartId = mandalartService.addMandalart(user, mandalartAddRequest);
-        return ResponseEntity.ok(mandalartId);
+        return ResponseEntity.created(URI.create("/api/mandalart/" + mandalartId)).build();
     }
 
     @GetMapping("/{mandalartId}")
