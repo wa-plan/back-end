@@ -73,6 +73,7 @@ public class SecurityConfig {
                 //h2 설정
 //                .requestMatchers(PathRequest.toH2Console()).permitAll()
                 //.requestMatchers("/", "/error", "/favicon.ico", "/**/*.png", "/**/*.gif", "/**/*.svg", "/**/*.jpg", "/**/*.html", "/**/*.css", "/**/*.js").permitAll()
+                .requestMatchers("/swagger", "/swagger-ui.html", "/swagger-ui/**", "/api-docs", "/api-docs/**", "/v3/api-docs/**").permitAll()
                 .requestMatchers(antMatcher(HttpMethod.POST, "/api/auth/**")).permitAll()
                 .requestMatchers(antMatcher(HttpMethod.POST, "/api/user/signup")).permitAll()
                 .requestMatchers(antMatcher(HttpMethod.POST, "/api/user/reset_password")).permitAll()
