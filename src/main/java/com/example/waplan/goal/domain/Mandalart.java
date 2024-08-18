@@ -25,13 +25,14 @@ public class Mandalart {
     @Column(nullable = false, length = 20)
     private String name;
 
-    @Column(nullable = true, length = 80)
+    @Column(nullable = false, length = 80)
     private String description;
 
     @Column(nullable = false)
     @Enumerated(EnumType.STRING)
     private Status status;
 
+    @Column(nullable = false)
     @Enumerated(EnumType.STRING)
     private Bookmark bookmark;
 
