@@ -8,6 +8,8 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 
+import java.time.LocalDate;
+import java.time.Period;
 import java.util.List;
 
 @Getter
@@ -30,6 +32,6 @@ public class MandalartResponse {
         else {
             attainmentRate = (double) mandalart.getAttainmentCount() / mandalart.getGoalCount();
         }
-        return new MandalartResponse(mandalart.getName(), mandalart.getDDay(), mandalart.getStatus(), mandalart.getPhotoList(), mandalart.getDescription(), attainmentRate);
+        return new MandalartResponse(mandalart.getName(), Period.between(LocalDate.now(), mandalart.getGoalDate().getDate()).getDays(), mandalart.getStatus(), mandalart.getPhotoList(), mandalart.getDescription(), attainmentRate);
     }
 }
