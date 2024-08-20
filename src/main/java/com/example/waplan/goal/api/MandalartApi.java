@@ -61,4 +61,10 @@ public class MandalartApi {
     public ResponseEntity<MandalartAllResponse> findMandalartAll(@CurrentUser User user, @Valid @PathVariable("mandalartId") Long mandalartId){
         return ResponseEntity.ok(mandalartService.findMandalart(user, mandalartId));
     }
+
+    @GetMapping
+    @PreAuthorize("hasRole('USER') or hasRole('ADMIN')")
+    public ResponseEntity<MandalartListResponse> findMandalartList(@CurrentUser User user) {
+        return ResponseEntity.ok(mandalartService.getMandalartList(user));
+    }
 }

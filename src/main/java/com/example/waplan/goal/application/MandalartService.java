@@ -88,4 +88,10 @@ public class MandalartService {
                 MandalartExceptionType.NOT_FOUND_MANDALART));
         return MandalartAllResponse.of(mandalart);
     }
+
+    public MandalartListResponse getMandalartList(User user) {
+        User persistUser = userRepository.findById(user.getId()).orElseThrow(() -> new UserException(
+                UserExceptionType.NOT_FOUND_MEMBER));
+        return MandalartListResponse.of(persistUser);
+    }
 }
