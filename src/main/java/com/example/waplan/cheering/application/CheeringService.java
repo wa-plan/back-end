@@ -5,10 +5,6 @@ import com.example.waplan.cheering.domain.Cheering;
 import com.example.waplan.cheering.domain.repository.CheeringRepository;
 import com.example.waplan.cheering.exception.CheeringException;
 import com.example.waplan.cheering.exception.CheeringExceptionType;
-import com.example.waplan.user.exception.UserException;
-import com.example.waplan.user.exception.UserExceptionType;
-import java.util.Optional;
-import java.util.Random;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 

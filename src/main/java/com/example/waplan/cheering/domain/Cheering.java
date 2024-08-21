@@ -1,9 +1,7 @@
 package com.example.waplan.cheering.domain;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import jakarta.annotation.Nullable;
+import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
 import lombok.AccessLevel;
 import lombok.Getter;
@@ -19,9 +17,11 @@ public class Cheering {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    @NotBlank
+
+    @Column(nullable = false)
     private String message;
-    @NotBlank
+
+    @Column(nullable = false)
     private String author;
 
     private Cheering(final String message, final String author){

@@ -1,20 +1,18 @@
 package com.example.waplan.user.domain;
 
 import com.example.waplan.base.BaseEntity;
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.EnumType;
-import jakarta.persistence.Enumerated;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import jakarta.persistence.Table;
+import com.example.waplan.goal.domain.GoalDate;
+import com.example.waplan.goal.domain.Mandalart;
+import jakarta.persistence.*;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.hibernate.annotations.ColumnDefault;
 import org.hibernate.annotations.DynamicInsert;
+
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @Getter
@@ -33,6 +31,7 @@ public class User extends BaseEntity {
     @Column(nullable = false, length = 70)
     private String password;
 
+    @Column(nullable = false)
     private String email;
 
     @Column(nullable = false, length = 11)
@@ -57,6 +56,14 @@ public class User extends BaseEntity {
     @Column(length = 15)
     private String nickname;
 
+    @Column(nullable = false)
+    private String profile;
+
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
+    private List<GoalDate> goalDates = new ArrayList<>();
+
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
+    private List<Mandalart> mandalartList = new ArrayList<>();
 
     public User(final Long id, final  String userId, final String password, final String email, final String phoneNum, final String description, final String nickname, final Role role, final AlarmType morningAlarm, final AlarmType nightAlarm){
         this.id = id;
@@ -70,7 +77,7 @@ public class User extends BaseEntity {
         this.morningAlarm = morningAlarm;
         this.nightAlarm = nightAlarm;
     }
-    public User(final String userId, final String password, final String email, final String phoneNum, final String description, final String nickname, final Role role){
+    public User(final String userId, final String password, final String email, final String phoneNum, final String description, final String nickname, final Role role, final String profile){
         this.userId = userId;
         this.email = email;
         this.description = description;
@@ -78,6 +85,7 @@ public class User extends BaseEntity {
         this.password = password;
         this.phoneNum = phoneNum;
         this.role = role;
+        this.profile = profile;
     }
 
     public void updateMorningAlarm(final AlarmType morningAlarm){
@@ -93,5 +101,9 @@ public class User extends BaseEntity {
     }
     public String roleName() {
         return role.name();
+    }
+
+    public void addMandalart(final Mandalart mandalart){
+        this.mandalartList.add(mandalart);
     }
 }

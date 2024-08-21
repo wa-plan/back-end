@@ -1,34 +1,55 @@
 package com.example.waplan.goal.application;
 
-import com.example.waplan.goal.application.dto.SecondGoalDto;
+import com.example.waplan.goal.application.dto.ColorUpdateRequest;
+import com.example.waplan.goal.application.dto.SecondGoalAddRequest;
+import com.example.waplan.goal.application.dto.SecondGoalUpdateRequest;
+import com.example.waplan.goal.domain.Mandalart;
 import com.example.waplan.goal.domain.SecondGoal;
+import com.example.waplan.goal.domain.repository.MandalartRepository;
 import com.example.waplan.goal.domain.repository.SecondGoalRepository;
-import java.util.List;
-import java.util.Optional;
-import org.springframework.beans.factory.annotation.Autowired;
+import com.example.waplan.goal.exception.MandalartException;
+import com.example.waplan.goal.exception.MandalartExceptionType;
+import com.example.waplan.goal.exception.SecondGoalException;
+import com.example.waplan.goal.exception.SecondGoalExceptionType;
+import com.example.waplan.user.domain.User;
+import com.example.waplan.user.domain.repository.UserRepository;
+import com.example.waplan.user.exception.UserException;
+import com.example.waplan.user.exception.UserExceptionType;
+import jakarta.transaction.Transactional;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 @Service
+@RequiredArgsConstructor
+@Transactional
 public class SecondGoalService {
-    @Autowired
-    private SecondGoalRepository secondGoalRepository;
 
-    public SecondGoal updateSecondGoal(SecondGoalDto goalDto){
-        SecondGoal goal = secondGoalRepository.findById(goalDto.getId()).orElseThrow();
-        goal.setTitle(goalDto.getTitle());
-        goal.setField(goalDto.getField());
-        return secondGoalRepository.save(goal);
+    private final SecondGoalRepository secondGoalRepository;
+    private final UserRepository userRepository;
+    private final MandalartRepository mandalartRepository;
+
+    public Long addSecondGoal(User user, SecondGoalAddRequest request){
+        userRepository.findById(user.getId()).orElseThrow(() -> new UserException(
+                UserExceptionType.NOT_FOUND_MEMBER));
+        Mandalart mandalart = mandalartRepository.findById(request.getMandalartId()).orElseThrow(() -> new MandalartException(
+                MandalartExceptionType.NOT_FOUND_MANDALART));
+        SecondGoal secondGoal = new SecondGoal(request.getName(), request.getColor(), mandalart);
+        return secondGoalRepository.save(secondGoal).getId();
     }
 
-    public void deleteSecondGoal(Long id){
-        secondGoalRepository.deleteById(id);
+    public void updateGoalColor(User user, ColorUpdateRequest request){
+        userRepository.findById(user.getId()).orElseThrow(() -> new UserException(
+                UserExceptionType.NOT_FOUND_MEMBER));
+        SecondGoal secondGoal = secondGoalRepository.findById(request.getSecondGoalId()).orElseThrow(() -> new SecondGoalException(
+                SecondGoalExceptionType.NOT_FOUND_SECONDGOAL));
+        secondGoal.setColor(request.getColor());
     }
 
-    public Optional<SecondGoal> getSecondGoalById(Long id) {
-        return secondGoalRepository.findById(id);
-    }
-
-    public List<SecondGoal> getSecondGoalByFirstGoalId(Long firstGoalId){
-        return secondGoalRepository.findByFirstGoalId(firstGoalId);
+    public void updateName(User user, SecondGoalUpdateRequest request){
+        userRepository.findById(user.getId()).orElseThrow(() -> new UserException(
+                UserExceptionType.NOT_FOUND_MEMBER));
+        SecondGoal secondGoal = secondGoalRepository.findById(request.getSecondGoalId()).orElseThrow(() -> new SecondGoalException(
+                SecondGoalExceptionType.NOT_FOUND_SECONDGOAL));
+        secondGoal.setName(request.getNewSecondGoal());
     }
 }

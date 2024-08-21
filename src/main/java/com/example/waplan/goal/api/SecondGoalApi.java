@@ -1,60 +1,46 @@
 package com.example.waplan.goal.api;
 
 import com.example.waplan.goal.application.SecondGoalService;
-import com.example.waplan.goal.application.dto.SecondGoalDto;
-import com.example.waplan.goal.domain.SecondGoal;
+import com.example.waplan.goal.application.dto.ColorUpdateRequest;
+import com.example.waplan.goal.application.dto.SecondGoalAddRequest;
+import com.example.waplan.goal.application.dto.SecondGoalUpdateRequest;
 import com.example.waplan.security.CurrentUser;
 import com.example.waplan.user.domain.User;
-import java.util.List;
-import java.util.Optional;
-import java.util.stream.Collectors;
-import org.springframework.beans.factory.annotation.Autowired;
+import jakarta.validation.Valid;
+import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.web.bind.annotation.*;
+
+import java.net.URI;
 
 @RestController
-@RequestMapping("/goal")
+@RequiredArgsConstructor
+@RequestMapping("/api/secondgoal")
 public class SecondGoalApi {
-    @Autowired
-    private SecondGoalService secondGoalService;
 
-    @GetMapping("/first/{firstGoalId}/seconds")
-    public ResponseEntity<List<SecondGoalDto>> getSecondGoalsByFirstGoalId(@PathVariable Long firstGoalId, @CurrentUser User user){
-        List<SecondGoal> secondGoals = secondGoalService.getSecondGoalByFirstGoalId(firstGoalId);
+    private final SecondGoalService secondGoalService;
 
-        if (secondGoals.isEmpty() || !secondGoals.get(0).getFirstGoal().getUser().getUserId().equals(user.getUserId())) {
-            return ResponseEntity.notFound().build();
-        }
-
-        List<SecondGoalDto> secondGoalDtos = secondGoals.stream()
-            .map(SecondGoalDto::fromEntity)
-            .collect(Collectors.toList());
-        return ResponseEntity.ok(secondGoalDtos);
+    @PostMapping("/add")
+    @PreAuthorize("hasRole('USER') or hasRole('ADMIN')")
+    public ResponseEntity<Void> addSecondGoal(@CurrentUser User user, @Valid @RequestBody SecondGoalAddRequest secondGoalAddRequest){
+        Long secondGoalId = secondGoalService.addSecondGoal(user, secondGoalAddRequest);
+        return ResponseEntity.created(URI.create("/api/secondgoal/" + secondGoalId)).build();
     }
 
-    @PostMapping("/edit/second")
-    public ResponseEntity<SecondGoalDto> editSecondGoal(@RequestBody SecondGoalDto secondGoalDto, @CurrentUser User user){
-        Optional<SecondGoal> secondGoal = secondGoalService.getSecondGoalById(secondGoalDto.getId());
-        if (secondGoal.isPresent() && secondGoal.get().getFirstGoal().getUser().getUserId().equals(user.getUserId())) {
-            SecondGoal updatedGoal = secondGoalService.updateSecondGoal(secondGoalDto);
-            return ResponseEntity.ok(SecondGoalDto.fromEntity(updatedGoal));
-        }
-        return ResponseEntity.notFound().build();
+    @PutMapping("/color")
+    @PreAuthorize("hasRole('USER') or hasRole('ADMIN')")
+    public ResponseEntity<Void> updateGoalColor(@CurrentUser User user, @Valid @RequestBody ColorUpdateRequest colorUpdateRequest){
+        secondGoalService.updateGoalColor(user, colorUpdateRequest);
+        return ResponseEntity.ok().build();
     }
 
-    @DeleteMapping("/delete/second/{id}")
-    public ResponseEntity<Void> deleteSecondGoal(@PathVariable Long id, @CurrentUser User user) {
-        Optional<SecondGoal> secondGoal = secondGoalService.getSecondGoalById(id);
-        if (secondGoal.isPresent() && secondGoal.get().getFirstGoal().getUser().getUserId().equals(user.getUserId())) {
-            secondGoalService.deleteSecondGoal(id);
-            return ResponseEntity.noContent().build();
-        }
-        return ResponseEntity.notFound().build();
+    @PutMapping()
+    @PreAuthorize("hasRole('USER') or hasRole('ADMIN')")
+    public ResponseEntity<Void> updateName(@CurrentUser User user, @Valid @RequestBody SecondGoalUpdateRequest secondGoalUpdateRequest){
+        secondGoalService.updateName(user, secondGoalUpdateRequest);
+        return ResponseEntity.ok().build();
     }
+
+
 }

@@ -1,38 +1,40 @@
 package com.example.waplan.goal.domain;
 
-import jakarta.persistence.CascadeType;
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.ManyToOne;
-import jakarta.persistence.OneToMany;
-import jakarta.persistence.Table;
-import java.util.List;
+import jakarta.persistence.*;
+import lombok.AccessLevel;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.util.ArrayList;
+import java.util.List;
+
 @Entity
-@Table(name = "제2목표")
 @Getter
 @Setter
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class SecondGoal {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(name = "title", nullable = false, length = 15)
-    private String title;
+    @Column(nullable = false, length = 20)
+    private String name;
 
-    @Column(name = "field", nullable = false, length = 15)
-    private String field;
+    @Column(nullable = false, length = 20)
+    private String color;
 
-    @ManyToOne
-    @JoinColumn(name = "first_goal_id", referencedColumnName = "id")
-    private FirstGoal firstGoal;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "mandalart_id")
+    private Mandalart mandalart;
 
-    @OneToMany(mappedBy= "secondGoal", cascade = CascadeType.ALL, orphanRemoval= true)
-    private List<ThirdGoal> thirdGoals;
+    @OneToMany(mappedBy = "secondGoal", cascade = CascadeType.ALL)
+    private List<ThirdGoal> thridGoalList = new ArrayList<ThirdGoal>();
+
+    public SecondGoal(final String name, final String color, final Mandalart mandalart) {
+        this.name = name;
+        this.color = color;
+        this.mandalart = mandalart;
+    }
 }
