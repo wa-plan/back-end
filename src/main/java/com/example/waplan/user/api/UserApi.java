@@ -2,25 +2,13 @@ package com.example.waplan.user.api;
 
 import com.example.waplan.security.CurrentUser;
 import com.example.waplan.user.application.UserService;
-import com.example.waplan.user.application.dto.MorningAlarmRequest;
-import com.example.waplan.user.application.dto.NightAlarmRequest;
-import com.example.waplan.user.application.dto.UpdatePasswordRequest;
-import com.example.waplan.user.application.dto.UserResponse;
-import com.example.waplan.user.application.dto.UserUpdateRequest;
+import com.example.waplan.user.application.dto.*;
 import com.example.waplan.user.domain.User;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.security.core.annotation.AuthenticationPrincipal;
-import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PatchMapping;
-import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequiredArgsConstructor
@@ -29,7 +17,7 @@ public class UserApi {
 
     private final UserService userService;
 
-    @PatchMapping("/morning_alarm")
+    @PutMapping("/morning_alarm")
     public ResponseEntity<Void> updateMorningAlarm(
         @CurrentUser final User user,
         @RequestBody @Valid final MorningAlarmRequest morningAlarmRequest
@@ -37,7 +25,7 @@ public class UserApi {
         userService.updateMorningAlarm(user, morningAlarmRequest);
         return ResponseEntity.noContent().build();
     }
-    @PatchMapping("/night_alarm")
+    @PutMapping("/night_alarm")
     public ResponseEntity<Void> updateNightAlarm(
         @CurrentUser final User user,
         @RequestBody @Valid final NightAlarmRequest nightAlarmRequest

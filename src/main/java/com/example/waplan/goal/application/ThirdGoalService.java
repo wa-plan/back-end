@@ -1,83 +1,47 @@
 package com.example.waplan.goal.application;
 
-import com.example.waplan.goal.application.dto.ThirdGoalAchievementDto;
-import com.example.waplan.goal.application.dto.ThirdGoalDto;
-import com.example.waplan.goal.application.dto.ThirdGoalNewTitleDto;
-import com.example.waplan.goal.domain.AchievementLevel;
-import com.example.waplan.goal.domain.GoalDate;
+import com.example.waplan.goal.application.dto.ThirdGoalAddRequest;
+import com.example.waplan.goal.application.dto.ThirdGoalUpdateRequest;
+import com.example.waplan.goal.domain.SecondGoal;
 import com.example.waplan.goal.domain.ThirdGoal;
+import com.example.waplan.goal.domain.repository.SecondGoalRepository;
 import com.example.waplan.goal.domain.repository.ThirdGoalRepository;
-import java.util.Date;
-import java.util.List;
-import java.util.Optional;
-import org.springframework.beans.factory.annotation.Autowired;
+import com.example.waplan.goal.exception.SecondGoalException;
+import com.example.waplan.goal.exception.SecondGoalExceptionType;
+import com.example.waplan.goal.exception.ThirdGoalException;
+import com.example.waplan.goal.exception.ThirdGoalExceptionType;
+import com.example.waplan.user.domain.User;
+import com.example.waplan.user.domain.repository.UserRepository;
+import com.example.waplan.user.exception.UserException;
+import com.example.waplan.user.exception.UserExceptionType;
+import jakarta.transaction.Transactional;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 @Service
+@RequiredArgsConstructor
+@Transactional
 public class ThirdGoalService {
-    @Autowired
-    private ThirdGoalRepository thirdGoalRepository;
 
-    public ThirdGoal updateThirdGoal(ThirdGoalDto goalDto){
-        ThirdGoal goal = thirdGoalRepository.findById(goalDto.getId()).orElseThrow();
-        goal.setTitle(goalDto.getTitle());
-        goal.setColor(goalDto.getColor());
-        goal.setAchievementLevel(goalDto.getAchievementLevel());
-        goal.setGoalDates(goalDto.getGoalDates());
+    private final UserRepository userRepository;
+    private final SecondGoalRepository secondGoalRepository;
+    private final ThirdGoalRepository thirdGoalRepository;
 
-        String newTitle = goalDto.getNewTitle();
-        if(newTitle != null){
-            goal.setNewTitle(newTitle);
-        }
-
-        return goal;
+    public Long addThirdGoal(User user, ThirdGoalAddRequest request){
+        userRepository.findById(user.getId()).orElseThrow(() -> new UserException(
+                UserExceptionType.NOT_FOUND_MEMBER));
+        SecondGoal secondGoal = secondGoalRepository.findById(request.getSecondGoalId()).orElseThrow(() -> new SecondGoalException(
+                SecondGoalExceptionType.NOT_FOUND_SECONDGOAL));
+        ThirdGoal thirdGoal = new ThirdGoal(request.getName(), secondGoal);
+        return thirdGoalRepository.save(thirdGoal).getId();
     }
 
-    public void deleteThirdGoal(Long id){
-        thirdGoalRepository.deleteById(id);
+    public void updateName(User user, ThirdGoalUpdateRequest request){
+        userRepository.findById(user.getId()).orElseThrow(() -> new UserException(
+                UserExceptionType.NOT_FOUND_MEMBER));
+        ThirdGoal thirdGoal = thirdGoalRepository.findById(request.getThirdGoalId()).orElseThrow(() -> new ThirdGoalException(
+                ThirdGoalExceptionType.NOT_FOUND_THIRDGOAL));
+        thirdGoal.setName(request.getNewThirdGoal());
     }
 
-    public Optional<ThirdGoal> getThirdGoalById(Long id){
-        return thirdGoalRepository.findById(id);
-    }
-
-    public ThirdGoal addNewTitle(Long id, String newTitle){
-        ThirdGoal goal = thirdGoalRepository.findById(id).orElseThrow();
-        goal.setNewTitle(newTitle);
-        return thirdGoalRepository.save(goal);
-    }
-
-    public Optional<ThirdGoalNewTitleDto> getNewTitle(Long id) {
-        return thirdGoalRepository.findById(id).map(ThirdGoalNewTitleDto::fromEntity);
-    }
-
-    public List<ThirdGoal> getThirdGoalsBySecondGoalId(Long secondGoalId){
-        return thirdGoalRepository.findBySecondGoalId(secondGoalId);
-    }
-
-    public ThirdGoal updateColor(Long id, String color){
-        ThirdGoal goal = thirdGoalRepository.findById(id).orElseThrow();
-        goal.setColor(color);
-        return thirdGoalRepository.save(goal);
-    }
-
-    public ThirdGoalAchievementDto updateAchievementLevel(Long id, String achievement) {
-        ThirdGoal goal = thirdGoalRepository.findById(id).orElseThrow(() -> new RuntimeException("ThirdGoal not found"));
-        try {
-            AchievementLevel level = AchievementLevel.valueOf(achievement.toUpperCase());
-            goal.setAchievementLevel(level);
-        } catch (IllegalArgumentException e) {
-            throw new RuntimeException("Invalid achievement level: " + achievement);
-        }
-        ThirdGoal updatedGoal = thirdGoalRepository.save(goal);
-        return ThirdGoalAchievementDto.fromEntity(updatedGoal);
-    }
-
-    public ThirdGoal updateDates(Long id, List<Date> dates){
-        ThirdGoal goal = thirdGoalRepository.findById(id).orElseThrow(() -> new RuntimeException("ThirdGoal not found"));
-        GoalDate goalDate = new GoalDate();
-        goalDate.setDates(dates);
-        goal.setGoalDates(goalDate);
-        return thirdGoalRepository.save(goal);
-    }
 }

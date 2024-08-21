@@ -3,12 +3,10 @@ package com.example.waplan.util;
 import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import org.springframework.util.SerializationUtils;
+
 import java.util.Base64;
 import java.util.Optional;
-
-
-
-import org.springframework.util.SerializationUtils;
 
 public class CookieUtils {
 

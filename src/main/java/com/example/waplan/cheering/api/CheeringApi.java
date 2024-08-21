@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/cheering")
+@RequestMapping("/api/cheering")
 public class CheeringApi {
 
     private final CheeringService cheeringService;
