@@ -2,6 +2,7 @@ package com.example.waplan.Photo.domain;
 
 import com.example.waplan.goal.domain.Mandalart;
 import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.AccessLevel;
 import lombok.Getter;
@@ -22,7 +23,7 @@ public class Photo {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "mandalart_id")
-    @JsonBackReference
+    @JsonIgnore
     private Mandalart mandalart;
 
     public Photo(final String path) {

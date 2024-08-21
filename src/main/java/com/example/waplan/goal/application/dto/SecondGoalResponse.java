@@ -13,11 +13,12 @@ import java.util.stream.Collectors;
 @AllArgsConstructor
 @Getter
 public class SecondGoalResponse {
+    private Long id;
     private String secondGoal;
     private List<ThirdGoalResponse> thirdGoals;
 
     public static List<ThirdGoalResponse> of(SecondGoal secondGoal) {
         return secondGoal.getThridGoalList().stream()
-                .map(thirdGoal -> new ThirdGoalResponse(thirdGoal.getName())).collect(Collectors.toList());
+                .map(thirdGoal -> new ThirdGoalResponse(thirdGoal.getId(), thirdGoal.getName())).collect(Collectors.toList());
     }
 }

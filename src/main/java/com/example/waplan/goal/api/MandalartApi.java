@@ -13,6 +13,7 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.net.URI;
+import java.util.List;
 
 @RestController
 @RequiredArgsConstructor
@@ -64,7 +65,7 @@ public class MandalartApi {
 
     @GetMapping
     @PreAuthorize("hasRole('USER') or hasRole('ADMIN')")
-    public ResponseEntity<MandalartListResponse> findMandalartList(@CurrentUser User user) {
+    public ResponseEntity<List<MandalartListResponse>> findMandalartList(@CurrentUser User user) {
         return ResponseEntity.ok(mandalartService.getMandalartList(user));
     }
 }

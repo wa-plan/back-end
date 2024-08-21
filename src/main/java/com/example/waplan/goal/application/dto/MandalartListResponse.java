@@ -14,12 +14,12 @@ import java.util.List;
 @AllArgsConstructor
 @Getter
 public class MandalartListResponse {
-    private List<String> mandalartList;
+    private Long id;
+    private String name;
 
-    public static MandalartListResponse of(User user) {
-        List<String> mandalartList = user.getMandalartList().stream().map(
-                Mandalart::getName
-        ).toList();
-        return new MandalartListResponse(mandalartList);
+    public static List<MandalartListResponse> of(User user) {
+        List<MandalartListResponse> mandalartList = user.getMandalartList().stream().map(
+                mandalart -> new MandalartListResponse(mandalart.getId(), mandalart.getName())).toList();
+        return mandalartList;
     }
 }

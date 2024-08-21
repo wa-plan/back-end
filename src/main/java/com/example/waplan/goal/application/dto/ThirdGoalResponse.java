@@ -9,6 +9,6 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @Getter
 public class ThirdGoalResponse {
-
+    private Long id;
     private String thirdGoal;
 }

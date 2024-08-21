@@ -18,7 +18,7 @@ public class MandalartAllResponse {
 
     public static MandalartAllResponse of(Mandalart mandalart) {
         List<SecondGoalResponse> secondGoalList = mandalart.getSecondGoalList().stream().map(
-                secondGoal -> new SecondGoalResponse(secondGoal.getName(), SecondGoalResponse.of(secondGoal))
+                secondGoal -> new SecondGoalResponse(secondGoal.getId(), secondGoal.getName(), SecondGoalResponse.of(secondGoal))
         ).toList();
         return new MandalartAllResponse(mandalart.getName(), secondGoalList);
     }

@@ -18,6 +18,7 @@ import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -89,7 +90,7 @@ public class MandalartService {
         return MandalartAllResponse.of(mandalart);
     }
 
-    public MandalartListResponse getMandalartList(User user) {
+    public List<MandalartListResponse> getMandalartList(User user) {
         User persistUser = userRepository.findById(user.getId()).orElseThrow(() -> new UserException(
                 UserExceptionType.NOT_FOUND_MEMBER));
         return MandalartListResponse.of(persistUser);

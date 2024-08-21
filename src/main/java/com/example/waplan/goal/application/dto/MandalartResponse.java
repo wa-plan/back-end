@@ -16,7 +16,7 @@ import java.util.List;
 @RequiredArgsConstructor
 @AllArgsConstructor(access = AccessLevel.PUBLIC)
 public class MandalartResponse {
-
+    private Long id;
     private String name;
     private Integer dDay;
     private Status status;
@@ -32,6 +32,6 @@ public class MandalartResponse {
         else {
             attainmentRate = (double) mandalart.getAttainmentCount() / mandalart.getGoalCount();
         }
-        return new MandalartResponse(mandalart.getName(), Period.between(LocalDate.now(), mandalart.getGoalDate().getDate()).getDays(), mandalart.getStatus(), mandalart.getPhotoList(), mandalart.getDescription(), attainmentRate);
+        return new MandalartResponse(mandalart.getId(), mandalart.getName(), Period.between(LocalDate.now(), mandalart.getGoalDate().getDate()).getDays(), mandalart.getStatus(), mandalart.getPhotoList(), mandalart.getDescription(), attainmentRate);
     }
 }
