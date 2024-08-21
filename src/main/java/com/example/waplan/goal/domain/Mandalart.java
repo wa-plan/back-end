@@ -25,13 +25,14 @@ public class Mandalart {
     @Column(nullable = false, length = 20)
     private String name;
 
-    @Column(nullable = true, length = 80)
+    @Column(nullable = false, length = 80)
     private String description;
 
     @Column(nullable = false)
     @Enumerated(EnumType.STRING)
     private Status status;
 
+    @Column(nullable = false)
     @Enumerated(EnumType.STRING)
     private Bookmark bookmark;
 
@@ -57,15 +58,12 @@ public class Mandalart {
     private Long attainmentCount;
 
     @Column(nullable = false)
-    private Integer dDay;
-
-    @Column(nullable = false)
     private Long goalCount;
 
     @OneToMany(mappedBy = "mandalart", cascade = CascadeType.ALL)
     private List<Goal> goals;
 
-    public Mandalart(final User user, final String name, final String description, final String color, final Long attainmentCount, final Integer dDay, final Long goalCount) {
+    public Mandalart(final User user, final String name, final String description, final String color, final Long attainmentCount, final Long goalCount) {
         this.user = user;
         this.name = name;
         this.description = description;
@@ -73,7 +71,6 @@ public class Mandalart {
         this.status = Status.IN_PROGRESS;
         this.bookmark = Bookmark.UNBOOKMARK;
         this.attainmentCount = attainmentCount;
-        this.dDay = dDay;
         this.goalCount = goalCount;
     }
 

@@ -23,12 +23,5 @@ public class SignUpRequest {
     @NotBlank
     private String phoneNum;
 
-    private String description;
-
-    @NotBlank
-    private String nickname;
-
-    @NotBlank
-    private String imageUrl;
 
 }

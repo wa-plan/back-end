@@ -18,8 +18,7 @@ import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
-import java.time.LocalDate;
-import java.time.Period;
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -35,7 +34,7 @@ public class MandalartService {
     public Long addMandalart(User user, MandalartAddRequest request) {
         User persistUser = userRepository.findById(user.getId()).orElseThrow(() -> new UserException(
             UserExceptionType.NOT_FOUND_MEMBER));
-        Mandalart mandalart = new Mandalart(persistUser, request.getName(), request.getDescription(), request.getColor(), 0L, Period.between(request.getDate(), LocalDate.now()).getDays(), 0L);
+        Mandalart mandalart = new Mandalart(persistUser, request.getName(), request.getDescription(), request.getColor(), 0L, 0L);
         for(String picture : request.getPicture()) {
             Photo photo = new Photo(picture);
             photoRepository.save(photo);
@@ -89,5 +88,11 @@ public class MandalartService {
         Mandalart mandalart = mandalartRepository.findById(mandalartId).orElseThrow(() -> new MandalartException(
                 MandalartExceptionType.NOT_FOUND_MANDALART));
         return MandalartAllResponse.of(mandalart);
+    }
+
+    public List<MandalartListResponse> getMandalartList(User user) {
+        User persistUser = userRepository.findById(user.getId()).orElseThrow(() -> new UserException(
+                UserExceptionType.NOT_FOUND_MEMBER));
+        return MandalartListResponse.of(persistUser);
     }
 }

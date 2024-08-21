@@ -15,13 +15,14 @@ import java.util.List;
 @Getter
 public class GoalResponse {
 
+    private Long id;
     private String goalName;
     private String color;
     private String thridGoal;
     private Status attainment;
 
     public static GoalResponse of(Goal goal){
-        return new GoalResponse(goal.getName(), goal.getThirdGoal().getSecondGoal().getColor(), goal.getThirdGoal().getName(), goal.getAttainment());
+        return new GoalResponse(goal.getId(), goal.getName(), goal.getThirdGoal().getSecondGoal().getColor(), goal.getThirdGoal().getName(), goal.getAttainment());
     }
     public static List<GoalResponse> listOf(List<Goal> goals) {
         List<GoalResponse> goalResponses = new ArrayList<>();
