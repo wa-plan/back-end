@@ -6,11 +6,13 @@ import com.example.dodakki.security.CurrentUser;
 import com.example.dodakki.user.domain.User;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.net.URI;
+import java.time.LocalDate;
 import java.util.List;
 
 @RestController
@@ -47,9 +49,9 @@ public class GoalApi {
         return ResponseEntity.noContent().build();
     }
 
-    @GetMapping
+    @GetMapping()
     @PreAuthorize("hasRole('USER') or hasRole('ADMIN')")
-    public ResponseEntity<List<GoalResponse>> getGoal(@CurrentUser User user, @Valid @RequestBody GoalRequest goalRequest){
+    public ResponseEntity<List<GoalResponse>> getGoal(@CurrentUser User user, @Valid @RequestParam("date") LocalDate goalRequest){
         return ResponseEntity.ok(goalService.getGoal(user, goalRequest));
     }
 

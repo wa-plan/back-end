@@ -12,6 +12,7 @@ import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
 
@@ -85,10 +86,10 @@ public class GoalService {
         mandalart.setGoalCount(mandalart.getGoalCount() - 1);
         goalRepository.delete(goal);
     }
-    public List<GoalResponse> getGoal(User user, GoalRequest request){
+    public List<GoalResponse> getGoal(User user, LocalDate request){
         User persistUser = userRepository.findById(user.getId()).orElseThrow(() -> new UserException(
                 UserExceptionType.NOT_FOUND_MEMBER));
-        GoalDate goalDate = goalDateRepository.findByUserAndDate(persistUser, request.getDate()).orElseThrow(() -> new GoalDateException(
+        GoalDate goalDate = goalDateRepository.findByUserAndDate(persistUser, request).orElseThrow(() -> new GoalDateException(
                 GoalDateExceptionType.NOT_FOUND_GOAL_DATE));
         List<GoalDateMap> goalDateMap = goalDateMapRepository.findByGoalDate(goalDate);
         List<Goal> goals = goalDateMap.stream().map(
