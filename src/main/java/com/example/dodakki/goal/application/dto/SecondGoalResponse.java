@@ -15,6 +15,7 @@ import java.util.stream.Collectors;
 public class SecondGoalResponse {
     private Long id;
     private String secondGoal;
+    private String color;
     private List<ThirdGoalResponse> thirdGoals;
 
     public static List<ThirdGoalResponse> of(SecondGoal secondGoal) {
