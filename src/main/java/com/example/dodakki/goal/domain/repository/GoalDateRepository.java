@@ -12,4 +12,5 @@ import java.util.Optional;
 public interface GoalDateRepository extends JpaRepository<GoalDate, Long> {
     Optional<GoalDate> findByUserAndDate(User user, LocalDate date);
     Optional<GoalDate> findByDate(LocalDate date);
+    Optional<GoalDate> findByGoalIdAndDate(Long goalId, LocalDate date);
 }

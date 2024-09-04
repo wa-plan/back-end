@@ -35,7 +35,7 @@ public class GoalService {
                 GoalExceptionType.NOT_FOUND_GOAL));
         Mandalart mandalart = mandalartRepository.findById(thirdGoal.getSecondGoal().getMandalart().getId()).orElseThrow(() -> new MandalartException(
                 MandalartExceptionType.NOT_FOUND_MANDALART));
-        Goal goal = new Goal(goalAddRequest.getName(), Status.IN_PROGRESS, mandalart, thirdGoal);
+        Goal goal = new Goal(goalAddRequest.getName(), Status.IN_PROGRESS, mandalart, thirdGoal, goalAddRequest.getRepeat());
         goalRepository.save(goal);
         List<GoalDateMap> goalDateMapList = goalAddRequest.getDates().stream()
                 .map(date -> {
@@ -85,6 +85,16 @@ public class GoalService {
                 MandalartExceptionType.NOT_FOUND_MANDALART));
         mandalart.setGoalCount(mandalart.getGoalCount() - 1);
         goalRepository.delete(goal);
+    }
+    public void deleteDateGoal(User user, Long goalId, LocalDate date){
+        userRepository.findById(user.getId()).orElseThrow(() -> new UserException(
+                UserExceptionType.NOT_FOUND_MEMBER));
+        GoalDate goalDate = goalDateRepository.findByGoalIdAndDate(goalId, date).orElseThrow(() -> new GoalException(
+                GoalExceptionType.NOT_FOUND_GOAL));
+        Goal goal = goalRepository.findById(goalId).orElseThrow(() -> new GoalException(
+                GoalExceptionType.NOT_FOUND_GOAL));
+        goalDateMapRepository.deleteByGoalAndGoalDate(goal, goalDate).orElseThrow(() -> new GoalDateMapException(
+                GoalDateMapExceptionType.NOT_FOUND_GOAL_DATE_MAP));
     }
     public List<GoalResponse> getGoal(User user, LocalDate request){
         User persistUser = userRepository.findById(user.getId()).orElseThrow(() -> new UserException(

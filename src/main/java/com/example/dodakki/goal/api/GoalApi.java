@@ -49,6 +49,13 @@ public class GoalApi {
         return ResponseEntity.noContent().build();
     }
 
+    @DeleteMapping("")
+    @PreAuthorize("hasRole('USER') or hasRole('ADMIN')")
+    public ResponseEntity<Void> deleteDateGoal(@CurrentUser User user, @RequestParam("goalId") Long goalId, @RequestParam("goalDate") LocalDate goalDate){
+        goalService.deleteDateGoal(user, goalId, goalDate);
+        return ResponseEntity.noContent().build();
+    }
+
     @GetMapping()
     @PreAuthorize("hasRole('USER') or hasRole('ADMIN')")
     public ResponseEntity<List<GoalResponse>> getGoal(@CurrentUser User user, @Valid @RequestParam("date") LocalDate goalRequest){

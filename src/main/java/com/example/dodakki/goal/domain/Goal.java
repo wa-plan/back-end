@@ -27,6 +27,9 @@ public class Goal {
     @Enumerated(EnumType.STRING)
     private Status attainment;
 
+    @Enumerated(EnumType.STRING)
+    private Repeat repeat;
+
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "third_goal_id")
     @JsonIgnore
@@ -40,10 +43,11 @@ public class Goal {
     @OneToMany(mappedBy = "goal", cascade = CascadeType.ALL)
     private List<GoalDateMap> goalDateMapList = new ArrayList<GoalDateMap>();
 
-    public Goal(final String name, final Status attainment, final Mandalart mandalart, final ThirdGoal thirdGoal) {
+    public Goal(final String name, final Status attainment, final Mandalart mandalart, final ThirdGoal thirdGoal, final Repeat repeat) {
         this.name = name;
         this.attainment = attainment;
         this.mandalart = mandalart;
         this.thirdGoal = thirdGoal;
+        this.repeat = repeat;
     }
 }
