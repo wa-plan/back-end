@@ -1,7 +1,7 @@
 package com.example.dodakki.goal.application.dto;
 
 import com.example.dodakki.goal.domain.Goal;
-import com.example.dodakki.goal.domain.Repeat;
+import com.example.dodakki.goal.domain.Repetition;
 import com.example.dodakki.goal.domain.Status;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
@@ -21,9 +21,9 @@ public class GoalResponse {
     private String color;
     private String thridGoal;
     private Status attainment;
-    private Repeat repeat;
+    private Repetition repetition;
     public static GoalResponse of(Goal goal){
-        return new GoalResponse(goal.getId(), goal.getName(), goal.getThirdGoal().getSecondGoal().getColor(), goal.getThirdGoal().getName(), goal.getAttainment(), goal.getRepeat());
+        return new GoalResponse(goal.getId(), goal.getName(), goal.getThirdGoal().getSecondGoal().getColor(), goal.getThirdGoal().getName(), goal.getAttainment(), goal.getRepetition());
     }
     public static List<GoalResponse> listOf(List<Goal> goals) {
         List<GoalResponse> goalResponses = new ArrayList<>();
