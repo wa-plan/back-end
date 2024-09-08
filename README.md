@@ -55,6 +55,7 @@
 
 ## ERD
 <hr>
+
 <img src="dodakkiErd.png" width="50%" height="50%"/>
 
 ## Contributor
