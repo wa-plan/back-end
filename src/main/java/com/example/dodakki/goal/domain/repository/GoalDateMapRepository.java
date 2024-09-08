@@ -13,4 +13,5 @@ import java.util.Optional;
 public interface GoalDateMapRepository extends JpaRepository<GoalDateMap, Long> {
     List<GoalDateMap> findByGoalDate(GoalDate goalDate);
     Optional<Void> deleteByGoalAndGoalDate(Goal goal, GoalDate goalDate);
+    Optional<GoalDateMap> findByGoalAndGoalDate(Goal goal, GoalDate goalDate);
 }

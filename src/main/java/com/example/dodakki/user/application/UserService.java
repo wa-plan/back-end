@@ -46,6 +46,8 @@ public class UserService {
 
     public void updateUser(User user, UserUpdateRequest userRequest){
         user.setNickname(userRequest.getNickname());
+        user.setDescription(userRequest.getDescription());
+        user.setProfile(userRequest.getProfile());
         userRepository.save(user);
     }
 

@@ -24,8 +24,13 @@ public class GoalDateMap {
     @JoinColumn(name = "goal_date_id")
     private GoalDate goalDate;
 
-    public GoalDateMap(Goal goal, GoalDate goalDate) {
+    @Enumerated(EnumType.STRING)
+    @Column(nullable = false)
+    private Status attainment;
+
+    public GoalDateMap(final Goal goal, final GoalDate goalDate, final Status attainment) {
         this.goal = goal;
         this.goalDate = goalDate;
+        this.attainment = attainment;
     }
 }

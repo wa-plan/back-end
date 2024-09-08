@@ -22,15 +22,16 @@ public class GoalResponse {
     private String thridGoal;
     private Status attainment;
     private Repetition repetition;
-    public static GoalResponse of(Goal goal){
-        return new GoalResponse(goal.getId(), goal.getName(), goal.getThirdGoal().getSecondGoal().getColor(), goal.getThirdGoal().getName(), goal.getAttainment(), goal.getRepetition());
-    }
-    public static List<GoalResponse> listOf(List<Goal> goals) {
-        List<GoalResponse> goalResponses = new ArrayList<>();
 
-        for(Goal goal : goals){
-            goalResponses.add(of(goal));
-        }
-        return goalResponses;
-    }
+//    public static GoalResponse of(Goal goal){
+//        return new GoalResponse(goal.getId(), goal.getName(), goal.getThirdGoal().getSecondGoal().getColor(), goal.getThirdGoal().getName(), goal.(), goal.getRepetition());
+//    }
+//    public static List<GoalResponse> listOf(List<Goal> goals) {
+//        List<GoalResponse> goalResponses = new ArrayList<>();
+//
+//        for(Goal goal : goals){
+//            goalResponses.add(of(goal));
+//        }
+//        return goalResponses;
+//    }
 }

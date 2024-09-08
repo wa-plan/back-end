@@ -13,4 +13,9 @@ public class UserUpdateRequest {
 
     @NotBlank
     private String nickname;
+
+    private String profile;
+
+    private String description;
+
 }

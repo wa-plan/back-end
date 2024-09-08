@@ -35,18 +35,18 @@ public class GoalService {
                 GoalExceptionType.NOT_FOUND_GOAL));
         Mandalart mandalart = mandalartRepository.findById(thirdGoal.getSecondGoal().getMandalart().getId()).orElseThrow(() -> new MandalartException(
                 MandalartExceptionType.NOT_FOUND_MANDALART));
-        Goal goal = new Goal(goalAddRequest.getName(), Status.NONE, mandalart, thirdGoal, goalAddRequest.getRepetition());
+        Goal goal = new Goal(goalAddRequest.getName(), mandalart, thirdGoal, goalAddRequest.getRepetition());
         goalRepository.save(goal);
         List<GoalDateMap> goalDateMapList = goalAddRequest.getDates().stream()
                 .map(date -> {
                     GoalDateMap goalDateMap;
                     Optional<GoalDate> goalDate = goalDateRepository.findByUserAndDate(persistUser, date);
                     if(goalDate.isPresent()){
-                        goalDateMap = goalDateMapRepository.save(new GoalDateMap(goal, goalDate.get()));
+                        goalDateMap = goalDateMapRepository.save(new GoalDateMap(goal, goalDate.get(), Status.NONE));
                     }
                     else{
                         GoalDate goalDate1 = goalDateRepository.save(new GoalDate(persistUser, date));
-                        goalDateMap = goalDateMapRepository.save(new GoalDateMap(goal, goalDate1));
+                        goalDateMap = goalDateMapRepository.save(new GoalDateMap(goal, goalDate1, Status.NONE));
                     }
                     return goalDateMap;
                 }).toList();
@@ -62,7 +62,11 @@ public class GoalService {
                 GoalExceptionType.NOT_FOUND_GOAL));
         Mandalart mandalart = mandalartRepository.findById(goal.getMandalart().getId()).orElseThrow(() -> new MandalartException(
                 MandalartExceptionType.NOT_FOUND_MANDALART));
-        goal.setAttainment(request.getAttainment());
+        GoalDate goalDate = goalDateRepository.findByDate(request.getDate()).orElseThrow(() -> new GoalDateException(
+                GoalDateExceptionType.NOT_FOUND_GOAL_DATE));
+        GoalDateMap goalDateMap = goalDateMapRepository.findByGoalAndGoalDate(goal, goalDate).orElseThrow(() -> new GoalDateMapException(
+                GoalDateMapExceptionType.NOT_FOUND_GOAL_DATE_MAP));
+        goalDateMap.setAttainment(request.getAttainment());
         if(request.getAttainment() == Status.SUCCESS){
             mandalart.setAttainmentCount(mandalart.getAttainmentCount() + 1);
         }
@@ -102,10 +106,12 @@ public class GoalService {
         GoalDate goalDate = goalDateRepository.findByUserAndDate(persistUser, request).orElseThrow(() -> new GoalDateException(
                 GoalDateExceptionType.NOT_FOUND_GOAL_DATE));
         List<GoalDateMap> goalDateMap = goalDateMapRepository.findByGoalDate(goalDate);
-        List<Goal> goals = goalDateMap.stream().map(
-                goalDateMap1 -> goalRepository.findById(goalDateMap1.getGoal().getId()).orElseThrow(() -> new GoalDateException(
-                        GoalDateExceptionType.NOT_FOUND_GOAL_DATE))
+        return goalDateMap.stream().map(
+                goalDateMap1 -> {
+                    Goal goal = goalRepository.findById(goalDateMap1.getGoal().getId()).orElseThrow(() -> new GoalException(
+                        GoalExceptionType.NOT_FOUND_GOAL));
+                    return new GoalResponse(goal.getId(), goal.getName(), goal.getThirdGoal().getSecondGoal().getColor(), goal.getThirdGoal().getName(), goalDateMap1.getAttainment(), goal.getRepetition());
+                }
         ).toList();
-        return GoalResponse.listOf(goals);
     }
 }
