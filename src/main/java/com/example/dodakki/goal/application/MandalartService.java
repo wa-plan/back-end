@@ -3,10 +3,10 @@ package com.example.dodakki.goal.application;
 import com.example.dodakki.Photo.domain.Photo;
 import com.example.dodakki.Photo.domain.repository.PhotoRepository;
 import com.example.dodakki.goal.application.dto.*;
-import com.example.dodakki.goal.domain.GoalDate;
-import com.example.dodakki.goal.domain.Mandalart;
-import com.example.dodakki.goal.domain.Status;
+import com.example.dodakki.goal.domain.*;
+import com.example.dodakki.goal.domain.repository.GoalDateMapRepository;
 import com.example.dodakki.goal.domain.repository.GoalDateRepository;
+import com.example.dodakki.goal.domain.repository.GoalRepository;
 import com.example.dodakki.goal.domain.repository.MandalartRepository;
 import com.example.dodakki.goal.exception.MandalartException;
 import com.example.dodakki.goal.exception.MandalartExceptionType;
@@ -18,6 +18,7 @@ import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -30,6 +31,8 @@ public class MandalartService {
     private final PhotoRepository photoRepository;
     private final UserRepository userRepository;
     private final GoalDateRepository goalDateRepository;
+    private final GoalRepository goalRepository;
+    private final GoalDateMapRepository goalDateMapRepository;
 
     public Long addMandalart(User user, MandalartAddRequest request) {
         User persistUser = userRepository.findById(user.getId()).orElseThrow(() -> new UserException(
@@ -95,4 +98,29 @@ public class MandalartService {
                 UserExceptionType.NOT_FOUND_MEMBER));
         return MandalartListResponse.of(persistUser);
     }
+
+    public MandalartStatusNumResponse getNum(User user, Long mandalartId) {
+        User persistUser = userRepository.findById(user.getId()).orElseThrow(() -> new UserException(
+                UserExceptionType.NOT_FOUND_MEMBER));
+        Mandalart mandalart = mandalartRepository.findById(mandalartId).orElseThrow(() -> new MandalartException(
+                MandalartExceptionType.NOT_FOUND_MANDALART));
+        int success = 0;
+        int inProgress = 0;
+        int failed = 0;
+        for (Goal goal : mandalart.getGoals()) {
+            for (GoalDateMap goalDateMap : goal.getGoalDateMapList()) {
+                if (goalDateMap.getAttainment() == Status.SUCCESS){
+                    success++;
+                }
+                else if (goalDateMap.getAttainment() == Status.IN_PROGRESS){
+                    inProgress++;
+                }
+                else if (goalDateMap.getAttainment() == Status.FAIL){
+                    failed++;
+                }
+            }
+        }
+        return new MandalartStatusNumResponse(success, inProgress, failed);
+    }
+
 }

@@ -22,16 +22,9 @@ public class MandalartResponse {
     private Status status;
     private List<Photo> photoList;
     private String description;
-    private Double attainment;
+    private MandalartStatusNumResponse statusNum;
 
-    public static MandalartResponse of(Mandalart mandalart) {
-        double attainmentRate;
-        if(mandalart.getGoalCount() == 0) {
-            attainmentRate = 0;
-        }
-        else {
-            attainmentRate = (double) mandalart.getAttainmentCount() / mandalart.getGoalCount();
-        }
-        return new MandalartResponse(mandalart.getId(), mandalart.getName(), Period.between(LocalDate.now(), mandalart.getGoalDate().getDate()).getDays(), mandalart.getStatus(), mandalart.getPhotoList(), mandalart.getDescription(), attainmentRate);
+    public static MandalartResponse of(Mandalart mandalart, MandalartStatusNumResponse statusNum) {
+        return new MandalartResponse(mandalart.getId(), mandalart.getName(), Period.between(LocalDate.now(), mandalart.getGoalDate().getDate()).getDays(), mandalart.getStatus(), mandalart.getPhotoList(), mandalart.getDescription(), statusNum);
     }
 }
