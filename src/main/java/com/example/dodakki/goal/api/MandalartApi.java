@@ -33,7 +33,7 @@ public class MandalartApi {
     @PreAuthorize("hasRole('USER') or hasRole('ADMIN')")
     public ResponseEntity<MandalartResponse> getMandalart(@CurrentUser User user, @PathVariable("mandalartId") Long mandalartId) {
         Mandalart mandalart = mandalartService.getMandalart(user, mandalartId);
-        return ResponseEntity.ok(MandalartResponse.of(mandalart));
+        return ResponseEntity.ok(MandalartResponse.of(mandalart, mandalartService.getNum(user, mandalartId)));
     }
 
     @DeleteMapping("/{mandalartId}")
