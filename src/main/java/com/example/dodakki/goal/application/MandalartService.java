@@ -18,7 +18,6 @@ import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -121,6 +120,24 @@ public class MandalartService {
             }
         }
         return new MandalartStatusNumResponse(success, inProgress, failed);
+    }
+
+    public DescriptionUpdateResponse updateDescription(User user, DescriptionUpdateRequest request){
+        userRepository.findById(user.getId()).orElseThrow(() -> new UserException(
+                UserExceptionType.NOT_FOUND_MEMBER));
+        Mandalart mandalart = mandalartRepository.findById(request.getMandalartId()).orElseThrow(() -> new MandalartException(
+                MandalartExceptionType.NOT_FOUND_MANDALART));
+        mandalart.setDescription(request.getDescription());
+        return new DescriptionUpdateResponse(mandalart.getDescription());
+    }
+
+    public NameUpdateResponse updateName(User user, NameUpdateRequest request){
+        userRepository.findById(user.getId()).orElseThrow(() -> new UserException(
+                UserExceptionType.NOT_FOUND_MEMBER));
+        Mandalart mandalart = mandalartRepository.findById(request.getMandalartId()).orElseThrow(() -> new MandalartException(
+                MandalartExceptionType.NOT_FOUND_MANDALART));
+        mandalart.setName(request.getName());
+        return new NameUpdateResponse(mandalart.getName());
     }
 
 }

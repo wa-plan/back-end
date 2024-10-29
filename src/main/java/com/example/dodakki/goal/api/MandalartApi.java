@@ -68,4 +68,19 @@ public class MandalartApi {
     public ResponseEntity<List<MandalartListResponse>> findMandalartList(@CurrentUser User user) {
         return ResponseEntity.ok(mandalartService.getMandalartList(user));
     }
+
+    @PatchMapping("/description")
+    @PreAuthorize("hasRole('USER') or hasRole('ADMIN')")
+    public ResponseEntity<DescriptionUpdateResponse> descriptionUpdate(@CurrentUser User user, @Valid @RequestBody DescriptionUpdateRequest descriptionUpdateRequest){
+        DescriptionUpdateResponse response = mandalartService.updateDescription(user, descriptionUpdateRequest);
+        return ResponseEntity.ok(response);
+    }
+
+    @PatchMapping
+    @PreAuthorize("hasRole('USER') or hasRole('ADMIN')")
+    public ResponseEntity<NameUpdateResponse> descriptionUpdate(@CurrentUser User user, @Valid @RequestBody NameUpdateRequest nameUpdateRequest){
+        NameUpdateResponse response = mandalartService.updateName(user, nameUpdateRequest);
+        return ResponseEntity.ok(response);
+    }
+
 }

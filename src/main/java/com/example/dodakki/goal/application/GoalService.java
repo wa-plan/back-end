@@ -1,6 +1,9 @@
 package com.example.dodakki.goal.application;
 
-import com.example.dodakki.goal.application.dto.*;
+import com.example.dodakki.goal.application.dto.GoalAddRequest;
+import com.example.dodakki.goal.application.dto.GoalResponse;
+import com.example.dodakki.goal.application.dto.GoalUpdateRequest;
+import com.example.dodakki.goal.application.dto.GoalUpdateStatusRequest;
 import com.example.dodakki.goal.domain.*;
 import com.example.dodakki.goal.domain.repository.*;
 import com.example.dodakki.goal.exception.*;
