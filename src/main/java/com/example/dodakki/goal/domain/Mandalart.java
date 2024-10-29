@@ -25,6 +25,9 @@ public class Mandalart {
     @Column(nullable = false, length = 20)
     private String name;
 
+    @Column(length=10)
+    private String color;
+
     @Column(nullable = false, length = 80)
     private String description;
 
@@ -35,9 +38,6 @@ public class Mandalart {
     @Column(nullable = false)
     @Enumerated(EnumType.STRING)
     private Bookmark bookmark;
-
-    @Column(nullable = false, length = 20)
-    private String color;
 
     @OneToMany(mappedBy = "mandalart", cascade = CascadeType.ALL)
     private List<SecondGoal> secondGoalList = new ArrayList<SecondGoal>();
