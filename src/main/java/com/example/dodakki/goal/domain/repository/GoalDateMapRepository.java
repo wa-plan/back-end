@@ -5,7 +5,6 @@ import com.example.dodakki.goal.domain.GoalDate;
 import com.example.dodakki.goal.domain.GoalDateMap;
 import com.example.dodakki.goal.domain.Status;
 import org.springframework.data.jpa.repository.JpaRepository;
-import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;

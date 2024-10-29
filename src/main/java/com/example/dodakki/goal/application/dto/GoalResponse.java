@@ -1,15 +1,11 @@
 package com.example.dodakki.goal.application.dto;
 
-import com.example.dodakki.goal.domain.Goal;
 import com.example.dodakki.goal.domain.Repetition;
 import com.example.dodakki.goal.domain.Status;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-
-import java.util.ArrayList;
-import java.util.List;
 
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
 @AllArgsConstructor
