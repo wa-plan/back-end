@@ -64,5 +64,4 @@ public class GoalApi {
         return ResponseEntity.ok(goalService.getGoal(user, goalRequest));
     }
 
-
 }

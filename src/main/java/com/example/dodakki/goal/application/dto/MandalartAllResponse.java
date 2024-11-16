@@ -13,13 +13,13 @@ import java.util.List;
 @Getter
 public class MandalartAllResponse {
     private String mandalart;
+    private String color;
     private List<SecondGoalResponse> secondGoals;
-
 
     public static MandalartAllResponse of(Mandalart mandalart) {
         List<SecondGoalResponse> secondGoalList = mandalart.getSecondGoalList().stream().map(
                 secondGoal -> new SecondGoalResponse(secondGoal.getId(), secondGoal.getName(), secondGoal.getColor(), SecondGoalResponse.of(secondGoal))
         ).toList();
-        return new MandalartAllResponse(mandalart.getName(), secondGoalList);
+        return new MandalartAllResponse(mandalart.getName(), mandalart.getColor(), secondGoalList);
     }
 }
