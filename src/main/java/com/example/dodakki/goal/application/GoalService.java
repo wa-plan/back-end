@@ -1,6 +1,7 @@
 package com.example.dodakki.goal.application;
 
 import com.example.dodakki.goal.application.dto.GoalAddRequest;
+import com.example.dodakki.goal.application.dto.GoalDateUpdateRequest;
 import com.example.dodakki.goal.application.dto.GoalResponse;
 import com.example.dodakki.goal.application.dto.GoalUpdateRequest;
 import com.example.dodakki.goal.application.dto.GoalUpdateStatusRequest;
@@ -117,4 +118,30 @@ public class GoalService {
                 }
         ).toList();
     }
+
+    public void updateGoalDate(User user, GoalDateUpdateRequest request) {
+        User persistUser = userRepository.findById(user.getId())
+            .orElseThrow(() -> new UserException(UserExceptionType.NOT_FOUND_MEMBER));
+
+        Goal goal = goalRepository.findById(request.getGoalId())
+            .orElseThrow(() -> new GoalException(GoalExceptionType.NOT_FOUND_GOAL));
+
+        // 기존 GoalDate 찾기
+        GoalDate oldGoalDate = goalDateRepository.findByUserAndDate(persistUser, request.getOldDate())
+            .orElseThrow(() -> new GoalDateException(GoalDateExceptionType.NOT_FOUND_GOAL_DATE));
+
+        // GoalDateMap 삭제
+        GoalDateMap goalDateMap = goalDateMapRepository.findByGoalAndGoalDate(goal, oldGoalDate)
+            .orElseThrow(() -> new GoalDateMapException(GoalDateMapExceptionType.NOT_FOUND_GOAL_DATE_MAP));
+
+        goalDateMapRepository.delete(goalDateMap);
+
+        // 새로운 GoalDate 추가
+        GoalDate newGoalDate = goalDateRepository.findByUserAndDate(persistUser, request.getNewDate())
+            .orElseGet(() -> goalDateRepository.save(new GoalDate(persistUser, request.getNewDate())));
+
+        goalDateMapRepository.save(new GoalDateMap(goal, newGoalDate, goalDateMap.getAttainment()));
+    }
+
+
 }

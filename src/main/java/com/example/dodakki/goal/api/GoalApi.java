@@ -2,6 +2,7 @@ package com.example.dodakki.goal.api;
 
 import com.example.dodakki.goal.application.GoalService;
 import com.example.dodakki.goal.application.dto.GoalAddRequest;
+import com.example.dodakki.goal.application.dto.GoalDateUpdateRequest;
 import com.example.dodakki.goal.application.dto.GoalResponse;
 import com.example.dodakki.goal.application.dto.GoalUpdateRequest;
 import com.example.dodakki.goal.application.dto.GoalUpdateStatusRequest;
@@ -62,6 +63,15 @@ public class GoalApi {
     @PreAuthorize("hasRole('USER') or hasRole('ADMIN')")
     public ResponseEntity<List<GoalResponse>> getGoal(@CurrentUser User user, @Valid @RequestParam("date") LocalDate goalRequest){
         return ResponseEntity.ok(goalService.getGoal(user, goalRequest));
+    }
+
+    @PutMapping("/date")
+    @PreAuthorize("hasRole('USER') or hasRole('ADMIN')")
+    public ResponseEntity<Void> updateGoalDate(
+        @CurrentUser User user,
+        @Valid @RequestBody GoalDateUpdateRequest request) {
+        goalService.updateGoalDate(user, request);
+        return ResponseEntity.noContent().build();
     }
 
 }
