@@ -90,5 +90,12 @@ public class MandalartApi {
         return ResponseEntity.noContent().build();
     }
 
+    @DeleteMapping("/future-dominoes")
+    @PreAuthorize("hasRole('USER') or hasRole('ADMIN')")
+    public ResponseEntity<Void> deleteFutureDominoes(@CurrentUser User user, @RequestParam("mandalartId") Long mandalartId) {
+        mandalartService.deleteFutureDominoes(user, mandalartId);
+        return ResponseEntity.noContent().build();
+    }
+
 
 }

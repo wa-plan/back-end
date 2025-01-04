@@ -15,6 +15,7 @@ import com.example.dodakki.user.domain.repository.UserRepository;
 import com.example.dodakki.user.exception.UserException;
 import com.example.dodakki.user.exception.UserExceptionType;
 import jakarta.transaction.Transactional;
+import java.time.LocalDate;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -164,5 +165,32 @@ public class MandalartService {
             }
         }
     }
+
+    public void deleteFutureDominoes(User user, Long mandalartId) {
+        User persistUser = userRepository.findById(user.getId())
+            .orElseThrow(() -> new UserException(UserExceptionType.NOT_FOUND_MEMBER));
+
+        Mandalart mandalart = mandalartRepository.findById(mandalartId)
+            .orElseThrow(() -> new MandalartException(MandalartExceptionType.NOT_FOUND_MANDALART));
+
+        // 오늘 날짜 기준 이후의 GoalDateMap과 GoalDate 필터링 및 삭제
+        List<Goal> goals = mandalart.getGoals();
+        for (Goal goal : goals) {
+            List<GoalDateMap> futureGoalDateMaps = goal.getGoalDateMapList().stream()
+                .filter(goalDateMap -> goalDateMap.getGoalDate().getDate().isAfter(LocalDate.now()))
+                .toList();
+
+            // GoalDateMap 삭제
+            for (GoalDateMap goalDateMap : futureGoalDateMaps) {
+                GoalDate goalDate = goalDateMap.getGoalDate();
+                goalDateMapRepository.delete(goalDateMap);
+
+                if (goalDateMapRepository.findByGoalDate(goalDate).isEmpty()) {
+                    goalDateRepository.delete(goalDate);
+                }
+            }
+        }
+    }
+
 
 }
