@@ -140,4 +140,29 @@ public class MandalartService {
         return new NameUpdateResponse(mandalart.getName());
     }
 
+    public void updateMandalartDate(User user, MandalartDateUpdateRequest request) {
+        User persistUser = userRepository.findById(user.getId())
+            .orElseThrow(() -> new UserException(UserExceptionType.NOT_FOUND_MEMBER));
+        Mandalart mandalart = mandalartRepository.findById(request.getMandalartId())
+            .orElseThrow(() -> new MandalartException(MandalartExceptionType.NOT_FOUND_MANDALART));
+
+        // 기존 GoalDate
+        GoalDate oldGoalDate = mandalart.getGoalDate();
+
+        // 새로운 GoalDate
+        GoalDate newGoalDate = goalDateRepository.findByUserAndDate(persistUser, request.getNewDate())
+            .orElseGet(() -> goalDateRepository.save(new GoalDate(persistUser, request.getNewDate())));
+
+        mandalart.setGoalDate(newGoalDate);
+
+        for (Goal goal : mandalart.getGoals()) {
+            List<GoalDateMap> goalDateMaps = goal.getGoalDateMapList();
+            for (GoalDateMap map : goalDateMaps) {
+                if (map.getGoalDate().equals(oldGoalDate)) {
+                    map.setGoalDate(newGoalDate);
+                }
+            }
+        }
+    }
+
 }
