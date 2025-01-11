@@ -83,4 +83,11 @@ public class MandalartApi {
         return ResponseEntity.ok(response);
     }
 
+    @PatchMapping("/color")
+    @PreAuthorize("hasRole('USER') or hasRole('ADMIN')")
+    public ResponseEntity<MandalartColorUpdateResponse> colorUpdate(@CurrentUser User user, @Valid @RequestBody MandalartColorUpdateRequest mandalartColorUpdateRequest){
+        MandalartColorUpdateResponse response = mandalartService.updateColor(user, mandalartColorUpdateRequest);
+        return ResponseEntity.ok(response);
+    }
+
 }

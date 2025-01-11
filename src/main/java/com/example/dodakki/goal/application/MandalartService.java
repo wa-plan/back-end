@@ -140,4 +140,13 @@ public class MandalartService {
         return new NameUpdateResponse(mandalart.getName());
     }
 
+    public MandalartColorUpdateResponse updateColor(User user, MandalartColorUpdateRequest request){
+        userRepository.findById(user.getId()).orElseThrow(() -> new UserException(
+                UserExceptionType.NOT_FOUND_MEMBER));
+        Mandalart mandalart = mandalartRepository.findById(request.getMandalartId()).orElseThrow(() -> new MandalartException(
+                MandalartExceptionType.NOT_FOUND_MANDALART));
+        mandalart.setColor(request.getColor());
+        return new MandalartColorUpdateResponse(mandalart.getColor());
+    }
+
 }
