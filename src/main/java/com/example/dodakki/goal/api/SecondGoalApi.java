@@ -42,5 +42,10 @@ public class SecondGoalApi {
         return ResponseEntity.ok().build();
     }
 
+    @DeleteMapping("/{secondGoalId}")
+    public ResponseEntity<Void> deleteSecondGoal(@CurrentUser User user, @PathVariable Long secondGoalId){
+        secondGoalService.deleteGoal(user, secondGoalId);
+        return ResponseEntity.noContent().build();
+    }
 
 }

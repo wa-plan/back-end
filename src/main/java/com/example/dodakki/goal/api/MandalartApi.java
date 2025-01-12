@@ -83,6 +83,13 @@ public class MandalartApi {
         return ResponseEntity.ok(response);
     }
 
+    @PatchMapping("/color")
+    @PreAuthorize("hasRole('USER') or hasRole('ADMIN')")
+    public ResponseEntity<MandalartColorUpdateResponse> colorUpdate(@CurrentUser User user, @Valid @RequestBody MandalartColorUpdateRequest mandalartColorUpdateRequest){
+        MandalartColorUpdateResponse response = mandalartService.updateColor(user, mandalartColorUpdateRequest);
+        return ResponseEntity.ok(response);
+    }
+
     @PatchMapping("/date")
     @PreAuthorize("hasRole('USER') or hasRole('ADMIN')")
     public ResponseEntity<Void> updateMandalartDate(@CurrentUser User user, @Valid @RequestBody MandalartDateUpdateRequest request) {
@@ -96,6 +103,5 @@ public class MandalartApi {
         mandalartService.deleteFutureDominoes(user, mandalartId);
         return ResponseEntity.noContent().build();
     }
-
 
 }

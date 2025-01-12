@@ -44,4 +44,9 @@ public class ThirdGoalService {
         thirdGoal.setName(request.getNewThirdGoal());
     }
 
+    public void deleteGoal(User user, Long thirdGoalId){
+        userRepository.findById(user.getId()).orElseThrow(() -> new UserException(
+                UserExceptionType.NOT_FOUND_MEMBER));
+        thirdGoalRepository.deleteById(thirdGoalId);
+    }
 }

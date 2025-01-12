@@ -52,4 +52,10 @@ public class SecondGoalService {
                 SecondGoalExceptionType.NOT_FOUND_SECONDGOAL));
         secondGoal.setName(request.getNewSecondGoal());
     }
+
+    public void deleteGoal(User user, Long secondGoalId){
+        userRepository.findById(user.getId()).orElseThrow(() -> new UserException(
+                UserExceptionType.NOT_FOUND_MEMBER));
+        secondGoalRepository.deleteById(secondGoalId);
+    }
 }
