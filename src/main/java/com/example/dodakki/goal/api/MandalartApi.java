@@ -90,4 +90,18 @@ public class MandalartApi {
         return ResponseEntity.ok(response);
     }
 
+    @PatchMapping("/date")
+    @PreAuthorize("hasRole('USER') or hasRole('ADMIN')")
+    public ResponseEntity<Void> updateMandalartDate(@CurrentUser User user, @Valid @RequestBody MandalartDateUpdateRequest request) {
+        mandalartService.updateMandalartDate(user, request);
+        return ResponseEntity.noContent().build();
+    }
+
+    @DeleteMapping("/future-dominoes")
+    @PreAuthorize("hasRole('USER') or hasRole('ADMIN')")
+    public ResponseEntity<Void> deleteFutureDominoes(@CurrentUser User user, @RequestParam("mandalartId") Long mandalartId) {
+        mandalartService.deleteFutureDominoes(user, mandalartId);
+        return ResponseEntity.noContent().build();
+    }
+
 }
