@@ -34,4 +34,10 @@ public class ThirdGoalApi {
         thirdGoalService.updateName(user, thirdGoalUpdateRequest);
         return ResponseEntity.ok().build();
     }
+
+    @DeleteMapping("/{thirdGoalId}")
+    public ResponseEntity<Void> deleteThirdGoal(@CurrentUser User user, @PathVariable Long thirdGoalId){
+        thirdGoalService.deleteGoal(user, thirdGoalId);
+        return ResponseEntity.noContent().build();
+    }
 }

@@ -33,7 +33,9 @@ public class UserResponse {
 
     private String nickname;
 
+    private String profile;
+
     public static UserResponse of(User user) {
-        return new UserResponse(user.getId(), user.getUserId(), user.getPassword(), user.getEmail(), user.getPhoneNum(), user.getDescription(), user.getRole(), user.getMorningAlarm(), user.getNightAlarm(), user.getNickname());
+        return new UserResponse(user.getId(), user.getUserId(), user.getPassword(), user.getEmail(), user.getPhoneNum(), user.getDescription(), user.getRole(), user.getMorningAlarm(), user.getNightAlarm(), user.getNickname(), user.getProfile());
     }
 }
