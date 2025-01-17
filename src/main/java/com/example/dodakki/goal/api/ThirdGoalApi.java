@@ -37,6 +37,7 @@ public class ThirdGoalApi {
     }
 
     @DeleteMapping("/{thirdGoalId}")
+    @PreAuthorize("hasRole('USER') or hasRole('ADMIN')")
     public ResponseEntity<Void> deleteThirdGoal(@CurrentUser User user, @PathVariable Long thirdGoalId){
         thirdGoalService.deleteGoal(user, thirdGoalId);
         return ResponseEntity.noContent().build();
