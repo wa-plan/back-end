@@ -1,10 +1,6 @@
 package com.example.dodakki.goal.application;
 
-import com.example.dodakki.goal.application.dto.GoalAddRequest;
-import com.example.dodakki.goal.application.dto.GoalDateUpdateRequest;
-import com.example.dodakki.goal.application.dto.GoalResponse;
-import com.example.dodakki.goal.application.dto.GoalUpdateRequest;
-import com.example.dodakki.goal.application.dto.GoalUpdateStatusRequest;
+import com.example.dodakki.goal.application.dto.*;
 import com.example.dodakki.goal.domain.*;
 import com.example.dodakki.goal.domain.repository.*;
 import com.example.dodakki.goal.exception.*;
@@ -141,6 +137,42 @@ public class GoalService {
             .orElseGet(() -> goalDateRepository.save(new GoalDate(persistUser, request.getNewDate())));
 
         goalDateMapRepository.save(new GoalDateMap(goal, newGoalDate, goalDateMap.getAttainment()));
+    }
+
+    @Transactional
+    public void updateDominoGoalDate(User user, GoalDominoDateUpdateRequest request) {
+        User persistUser = userRepository.findById(user.getId())
+                .orElseThrow(() -> new UserException(UserExceptionType.NOT_FOUND_MEMBER));
+
+        Goal goal = goalRepository.findById(request.getGoalId())
+                .orElseThrow(() -> new GoalException(GoalExceptionType.NOT_FOUND_GOAL));
+
+        // 기존 날짜 찾기
+        GoalDate oldGoalDate = goalDateRepository.findByUserAndDate(persistUser, request.getOldDate())
+                .orElseThrow(() -> new GoalDateException(GoalDateExceptionType.NOT_FOUND_GOAL_DATE));
+
+        // 기존 날짜에 연결된 모든 GoalDateMap 찾기
+        List<GoalDateMap> goalDateMaps = goalDateMapRepository.findByGoalDate(oldGoalDate);
+
+        if (goalDateMaps.isEmpty()) {
+            throw new GoalDateMapException(GoalDateMapExceptionType.NOT_FOUND_GOAL_DATE_MAP);
+        }
+
+        // 새로운 날짜에 해당하는 GoalDate 찾기 또는 생성
+        GoalDate newGoalDate = goalDateRepository.findByUserAndDate(persistUser, request.getNewDate())
+                .orElseGet(() -> goalDateRepository.save(new GoalDate(persistUser, request.getNewDate())));
+
+        // 모든 연결된 목표 날짜 업데이트 (도미노 효과)
+        for (GoalDateMap goalDateMap : goalDateMaps) {
+            Goal currentGoal = goalDateMap.getGoal();
+
+            // 기존 날짜 매핑 삭제
+            goalDateMapRepository.delete(goalDateMap);
+
+            // 새 날짜에 대한 GoalDateMap 새로 저장
+            GoalDateMap newGoalDateMap = new GoalDateMap(currentGoal, newGoalDate, goalDateMap.getAttainment());
+            goalDateMapRepository.save(newGoalDateMap);
+        }
     }
 
 
