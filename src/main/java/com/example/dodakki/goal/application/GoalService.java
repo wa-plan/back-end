@@ -175,5 +175,30 @@ public class GoalService {
         }
     }
 
+    @Transactional
+    public void deleteFutureDominoGoals(User user, GoalDominoDeleteRequest request) {
+        User persistUser = userRepository.findById(user.getId())
+                .orElseThrow(() -> new UserException(UserExceptionType.NOT_FOUND_MEMBER));
+
+        Goal goal = goalRepository.findById(request.getGoalId())
+                .orElseThrow(() -> new GoalException(GoalExceptionType.NOT_FOUND_GOAL));
+
+        // 오늘 날짜 기준으로 목표 삭제 진행
+        LocalDate today = LocalDate.now();
+
+        // 해당 목표와 연결된 모든 GoalDateMap 가져오기
+        List<GoalDateMap> goalDateMaps = goalDateMapRepository.findByGoal(goal);
+
+        if (goalDateMaps.isEmpty()) {
+            throw new GoalDateMapException(GoalDateMapExceptionType.NOT_FOUND_GOAL_DATE_MAP);
+        }
+
+        // 오늘 이후 날짜만 필터링해서 삭제
+        for (GoalDateMap goalDateMap : goalDateMaps) {
+            if (goalDateMap.getGoalDate().getDate().isAfter(today)) {
+                goalDateMapRepository.delete(goalDateMap);
+            }
+        }
+    }
 
 }

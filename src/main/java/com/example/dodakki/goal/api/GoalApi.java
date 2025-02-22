@@ -79,4 +79,13 @@ public class GoalApi {
         return ResponseEntity.noContent().build();
     }
 
+    @DeleteMapping("/delete-future-domino")
+    @PreAuthorize("hasRole('USER') or hasRole('ADMIN')")
+    public ResponseEntity<Void> deleteFutureDominoGoals(
+            @CurrentUser User user,
+            @Valid @RequestBody GoalDominoDeleteRequest request) {
+        goalService.deleteFutureDominoGoals(user, request);
+        return ResponseEntity.noContent().build();
+    }
+
 }
