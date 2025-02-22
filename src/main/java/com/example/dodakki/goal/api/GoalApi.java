@@ -88,4 +88,14 @@ public class GoalApi {
         return ResponseEntity.noContent().build();
     }
 
+    @PutMapping("/full-update")
+    @PreAuthorize("hasRole('USER') or hasRole('ADMIN')")
+    public ResponseEntity<Void> fullUpdateGoal(
+            @CurrentUser User user,
+            @Valid @RequestBody GoalFullUpdateRequest request) {
+        goalService.fullUpdateGoal(user, request);
+        return ResponseEntity.noContent().build();
+    }
+
+
 }

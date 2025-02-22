@@ -201,4 +201,45 @@ public class GoalService {
         }
     }
 
+    @Transactional
+    public void fullUpdateGoal(User user, GoalFullUpdateRequest request) {
+        User persistUser = userRepository.findById(user.getId())
+                .orElseThrow(() -> new UserException(UserExceptionType.NOT_FOUND_MEMBER));
+
+        ThirdGoal thirdGoal = thirdGoalRepository.findById(request.getThirdGoalId())
+                .orElseThrow(() -> new GoalException(GoalExceptionType.NOT_FOUND_GOAL));
+
+        Mandalart mandalart = mandalartRepository.findById(thirdGoal.getSecondGoal().getMandalart().getId())
+                .orElseThrow(() -> new MandalartException(MandalartExceptionType.NOT_FOUND_MANDALART));
+
+        // 기존 Goal 찾기
+        List<Goal> existingGoals = goalRepository.findAll().stream()
+                .filter(goal -> goal.getThirdGoal().getId().equals(request.getThirdGoalId()))
+                .toList();
+
+        if (existingGoals.isEmpty()) {
+            throw new GoalException(GoalExceptionType.NOT_FOUND_GOAL);
+        }
+
+        for (Goal goal : existingGoals) {
+            // 이름과 반복 주기 업데이트
+            goal.setName(request.getName());
+            goal.setRepetition(request.getRepetition());
+
+            // 기존 GoalDateMap 삭제
+            goalDateMapRepository.deleteAll(goal.getGoalDateMapList());
+
+            // 새로운 날짜로 GoalDateMap 재설정
+            List<GoalDateMap> newGoalDateMaps = request.getDates().stream()
+                    .map(date -> {
+                        GoalDate goalDate = goalDateRepository.findByUserAndDate(persistUser, date)
+                                .orElseGet(() -> goalDateRepository.save(new GoalDate(persistUser, date)));
+                        return goalDateMapRepository.save(new GoalDateMap(goal, goalDate, Status.NONE));
+                    }).toList();
+
+            goal.setGoalDateMapList(newGoalDateMaps);
+        }
+    }
+
+
 }
